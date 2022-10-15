@@ -19,5 +19,11 @@ export const Wrapper = styled.div<Pick<MenuItemProps, 'selected'>>`
     font-size: 1.8rem;
     color: ${theme.colors.grey400};
     ${selected! && wrapperModifiers.selected(theme)}
+
+    transition: all .5s ease;
+
+    :hover {
+      background-color: ${theme.colors.primary200};
+    }
   `}
 `;
