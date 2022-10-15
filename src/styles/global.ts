@@ -11,6 +11,8 @@ const GlobalStyles = createGlobalStyle`
   ${({ theme }) => css`
     html {
       font-size: 62.5%;
+      font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
     body {
       background-color: ${theme.colors.primary800};

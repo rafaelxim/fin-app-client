@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
-import './index.css';
 import App from './App';
 import theme from './styles/theme';
 import GlobalStyles from './styles/global';
