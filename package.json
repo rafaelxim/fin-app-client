@@ -81,6 +81,12 @@
   "jest": {
     "testMatch": [
       "**/test.tsx"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{js,jsx,tsx,ts}",
+      "!**/stories.tsx",
+      "!**/node_modules/**",
+      "!**/vendor/**"
     ]
   }
 }
