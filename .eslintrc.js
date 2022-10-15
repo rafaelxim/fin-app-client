@@ -25,5 +25,6 @@ module.exports = {
     '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/member-delimiter-style': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
 };

@@ -9,8 +9,6 @@ const Wallet: React.FC<Props> = ({ color }) => {
   return (
     <S.Wrapper color={color}>
       <svg
-        width="33"
-        height="33"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
