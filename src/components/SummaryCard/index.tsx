@@ -1,6 +1,7 @@
 import React from 'react';
 import * as S from './styles';
 import CardWrapper from '../CardWrapper';
+import Divider from '../Divider';
 
 type SummaryCardProps = {
   icon: React.ReactNode;
@@ -26,7 +27,7 @@ const SummaryCard = ({
       </S.IconWrapper>
       <S.CardTitle>{title}</S.CardTitle>
       <S.CardValue>{mainValue}</S.CardValue>
-      <S.CardDivider />
+      <Divider />
       <S.Variation>
         <S.VariationValue
           data-testid="variation-value"
