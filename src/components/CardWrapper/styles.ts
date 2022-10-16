@@ -1,9 +1,14 @@
 import styled, { css } from 'styled-components';
 
-export const Wrapper = styled.div`
-  ${({ theme }) => css`
+type WrapperProps = {
+  topMargin: boolean;
+};
+
+export const Wrapper = styled.div<WrapperProps>`
+  ${({ theme, topMargin }) => css`
     background-color: ${theme.colors.primary200};
     border-radius: 2rem;
     color: ${theme.colors.grey100};
+    margin-top: ${topMargin ? '2rem' : '0'};
   `}
 `;
