@@ -14,6 +14,7 @@
     "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "6.4.1",
     "react-scripts": "5.0.1",
     "recharts": "^2.1.15",
     "styled-components": "^5.3.6",
@@ -23,7 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "yarn testWithCoverage --coverage",
+    "test": "yarn testWithCoverage --coverage --watchAll",
     "testWithCoverage": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
@@ -85,7 +86,7 @@
       "**/test.tsx"
     ],
     "collectCoverageFrom": [
-      "**/*.{js,jsx,tsx,ts}",
+      "src/**/*.{js,jsx,tsx,ts}",
       "!**/stories.tsx",
       "!**/node_modules/**",
       "!**/vendor/**"
