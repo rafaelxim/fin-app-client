@@ -10,5 +10,6 @@ export const Wrapper = styled.div<WrapperProps>`
     border-radius: 2rem;
     color: ${theme.colors.grey100};
     margin-top: ${topMargin ? '2rem' : '0'};
+    box-shadow: 8px 8px 16px 4px #000000;
   `}
 `;

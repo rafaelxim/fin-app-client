@@ -1,26 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-  createBrowserRouter,
-  RouterProvider,
-  // Route,
-  Link,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
-// import App from './App';
 import theme from './styles/theme';
 import GlobalStyles from './styles/global';
+import Dashboard from './pages/Dashboard';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <div>
-        <h1>Hello World</h1>
-        <Link to="about">About Us</Link>
-      </div>
-    ),
+    element: <Dashboard />,
   },
   {
     path: 'about',

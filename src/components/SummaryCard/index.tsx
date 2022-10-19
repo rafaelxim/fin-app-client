@@ -7,7 +7,7 @@ type SummaryCardProps = {
   icon: React.ReactNode;
   negativeVariation?: boolean;
   title: string;
-  mainValue: string;
+  mainValue: string | 0;
   variation: string;
   elapsedTime: string;
 };
