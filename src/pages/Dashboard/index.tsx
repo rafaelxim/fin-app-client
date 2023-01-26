@@ -34,22 +34,27 @@ const Dashboard = () => {
     });
   };
 
+  const getMonthTotalValue = (currentEntries: EntryEntity[]) => {
+    const res = currentEntries.reduce((prev, curr) => {
+      return prev + curr.attributes.value;
+    }, 0);
+
+    return res;
+  };
+
   const getTotalPatrimony = () => {
     if (monthBalances?.length) {
       let currentEntries = filterByMonthSubstraction(0);
       let pastEntries = filterByMonthSubstraction(1);
       if (currentEntries?.length === 0) {
         currentEntries = filterByMonthSubstraction(1);
+        console.log({ currentEntries });
         pastEntries = filterByMonthSubstraction(2);
       }
 
-      const currentPatrimonyValue = currentEntries!.reduce((prev, curr) => {
-        return prev + curr.attributes.value;
-      }, 0);
+      const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
 
-      const pastPatrimonyValue = pastEntries!.reduce((prev, curr) => {
-        return prev + curr.attributes.value;
-      }, 0);
+      const pastPatrimonyValue = getMonthTotalValue(pastEntries!);
 
       const variation = (currentPatrimonyValue / pastPatrimonyValue - 1) * 100;
 
@@ -67,6 +72,26 @@ const Dashboard = () => {
         formattedVariation: ' ',
       };
     }
+  };
+
+  const getTotalPatrimonyByMonth = () => {
+    const patrimonyByMonth = [];
+    for (let i = 0; i < 36; i++) {
+      const currentMonthEntries = filterByMonthSubstraction(i);
+      if (currentMonthEntries?.length) {
+        const monthObj = {
+          period: moment(currentMonthEntries[0].attributes.period)
+            .locale('pt-br')
+            .format('MMM/YYYY'),
+          totalPatrimony: getMonthTotalValue(currentMonthEntries),
+        };
+        patrimonyByMonth.push(monthObj);
+      }
+    }
+
+    console.log(patrimonyByMonth);
+
+    return patrimonyByMonth.reverse();
   };
 
   const { variation, currentPatrimonyValue, formattedVariation } =
@@ -109,8 +134,12 @@ const Dashboard = () => {
         </S.SummaryCardsContainer>
 
         <S.GraphicCardContainer>
-          <GraphicCard />
-          <GraphicCard />
+          <GraphicCard
+            data={getTotalPatrimonyByMonth()}
+            dataKeyX="period"
+            dataKeyY="totalPatrimony"
+          />
+          {/* <GraphicCard /> */}
         </S.GraphicCardContainer>
       </S.Grid>
     </S.Wrapper>

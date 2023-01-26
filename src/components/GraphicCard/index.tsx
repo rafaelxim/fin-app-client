@@ -1,17 +1,26 @@
 import React from 'react';
-
 import CardWrapper from '../CardWrapper';
 import * as S from './styles';
 import Divider from '../Divider';
 import UpdateIcon from '../../assets/Icons/Update';
-import AreaChartCustom, { data } from '../AreaChart';
+import AreaChartCustom from '../AreaChart';
 
-const GraphicCard = () => {
+type GraphicCardProps = {
+  data: any;
+  dataKeyX: string;
+  dataKeyY: string;
+};
+
+const GraphicCard = ({ data, dataKeyX, dataKeyY }: GraphicCardProps) => {
   return (
     <CardWrapper topMargin>
       <S.Content>
         <S.Graphic>
-          <AreaChartCustom data={data} dataKeyX="name" dataKeyY="uv" />
+          <AreaChartCustom
+            data={data}
+            dataKeyX={dataKeyX}
+            dataKeyY={dataKeyY}
+          />
         </S.Graphic>
         <S.CardInfo>
           <S.CardTitle>Evolução do Patrimônio</S.CardTitle>
@@ -20,7 +29,7 @@ const GraphicCard = () => {
           <Divider />
           <S.LastUpdate>
             <UpdateIcon color="grey400" />
-            <S.UpdateDescription>atualizado há uma hora</S.UpdateDescription>
+            <S.UpdateDescription>atualizado em tempo real</S.UpdateDescription>
           </S.LastUpdate>
         </S.CardInfo>
       </S.Content>

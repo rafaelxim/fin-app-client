@@ -1,18 +1,19 @@
 import React from 'react';
 import {
-  AreaChart,
-  Area,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
-  // Tooltip,
+  Tooltip,
   ResponsiveContainer,
-  // TooltipProps,
+  TooltipProps,
 } from 'recharts';
-// import {
-//   ValueType,
-//   NameType,
-// } from 'recharts/src/component/DefaultTooltipContent';
-// import * as S from './styles';
+import {
+  ValueType,
+  NameType,
+} from 'recharts/src/component/DefaultTooltipContent';
+import { toReal } from '../../utils/formaters/helpers';
+import * as S from './styles';
 
 type ChartAreaProps = {
   data: any;
@@ -65,47 +66,60 @@ export const data = [
   },
 ];
 
-const AreaChartCustom = ({ data, dataKeyX, dataKeyY }: ChartAreaProps) => {
-  // const CustomTooltip = ({
-  //   active,
-  //   payload,
-  //   label,
-  // }: TooltipProps<ValueType, NameType>) => {
-  //   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  //   if (active && payload && payload.length) {
-  //     return (
-  //       <S.CustomTooltip>
-  //         <p className="desc">Anything you want can be displayed here.</p>
-  //       </S.CustomTooltip>
-  //     );
-  //   }
+const formatter = (tick: any) => {
+  console.log('-- aqwu--');
+  console.log({ tick: typeof tick });
+  if (tick !== -Infinity) {
+    return toReal(tick);
+  }
 
-  //   return null;
-  // };
+  return tick;
+};
+
+const AreaChartCustom = ({ data, dataKeyX, dataKeyY }: ChartAreaProps) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+    label,
+  }: TooltipProps<ValueType, NameType>) => {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (active && payload && payload.length) {
+      return (
+        <S.CustomTooltip>
+          <p>{payload[0].value ? toReal(payload[0].value as number) : ''}</p>
+        </S.CustomTooltip>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <AreaChart
+      <LineChart
         width={500}
         height={400}
         data={data}
         margin={{
           top: 20,
           right: 30,
-          left: -10,
+          left: 15,
           bottom: 0,
         }}
       >
         <XAxis stroke="#f2f2f2" dataKey={dataKeyX} />
-        <YAxis stroke="#f2f2f2" />
-        {/* <Tooltip content={<CustomTooltip />} /> */}
-        <Area
+        <YAxis tickFormatter={formatter} stroke="#f2f2f2" />
+        <Tooltip
+          wrapperStyle={{ outline: 'none' }}
+          content={<CustomTooltip />}
+        />
+        <Line
           type="monotone"
           dataKey={dataKeyY}
           stroke="#f2f2f2"
           fill="#f2f2f2"
         />
-      </AreaChart>
+      </LineChart>
     </ResponsiveContainer>
   );
 };

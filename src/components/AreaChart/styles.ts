@@ -1,5 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const CustomTooltip = styled.div`
-  background-color: red;
+  ${({ theme }) => css`
+    background-color: ${theme.colors.grey100};
+    color: ${theme.colors.primary400};
+    padding: 1rem 2rem;
+    border: none;
+  `}
 `;
