@@ -9,5 +9,5 @@ export default {
 } as Meta;
 
 export const Default: Story = () => (
-  <GraphicCard data={data} dataKeyX="name" dataKeyY="uv" />
+  <GraphicCard title="Evolução" data={data} dataKeyX="name" dataKeyY="uv" />
 );

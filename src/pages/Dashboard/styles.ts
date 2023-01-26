@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   /* min-height: 100vh; */
-  padding: 0 3rem;
+  padding: 0 3rem 0 0;
 `;
 
 export const Grid = styled.div`
@@ -16,16 +16,16 @@ export const Grid = styled.div`
 `;
 
 export const MenuContainer = styled.div`
-  grid-column: 1 / span 3;
+  grid-column: 1 / span 2;
   grid-row: 1 / 6;
   align-self: stretch;
 `;
 
 export const SummaryCardsContainer = styled.div`
-  grid-column: 4 / -1;
+  grid-column: 3 / -1;
   display: flex;
   gap: 3rem;
-  justify-content: center;
+  justify-content: space-evenly;
 
   > div {
     flex: 1;
@@ -34,7 +34,7 @@ export const SummaryCardsContainer = styled.div`
 `;
 
 export const GraphicCardContainer = styled.div`
-  grid-column: 4 / -1;
+  grid-column: 3 / -1;
   gap: 3rem;
   display: flex;
   > div {
@@ -44,7 +44,7 @@ export const GraphicCardContainer = styled.div`
 
 export const HeaderContainer = styled.div`
   grid-row: 1 / 2;
-  grid-column: 4 / -1;
+  grid-column: 3 / -1;
   align-self: end;
   padding-left: 2rem;
 `;

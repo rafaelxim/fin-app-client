@@ -9,9 +9,10 @@ type GraphicCardProps = {
   data: any;
   dataKeyX: string;
   dataKeyY: string;
+  title: string;
 };
 
-const GraphicCard = ({ data, dataKeyX, dataKeyY }: GraphicCardProps) => {
+const GraphicCard = ({ data, dataKeyX, dataKeyY, title }: GraphicCardProps) => {
   return (
     <CardWrapper topMargin>
       <S.Content>
@@ -23,7 +24,7 @@ const GraphicCard = ({ data, dataKeyX, dataKeyY }: GraphicCardProps) => {
           />
         </S.Graphic>
         <S.CardInfo>
-          <S.CardTitle>Evolução do Patrimônio</S.CardTitle>
+          <S.CardTitle>{title}</S.CardTitle>
           <S.CardSubtitle>Mês a Mês</S.CardSubtitle>
 
           <Divider />

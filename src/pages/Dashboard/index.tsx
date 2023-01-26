@@ -27,7 +27,8 @@ const Dashboard = () => {
 
   const filterByMonthSubstraction = (
     toSubtract: number = 0,
-    category?: string
+    category?: string,
+    investment?: string
   ) => {
     return monthBalances?.filter((entry) => {
       if (category) {
@@ -36,6 +37,12 @@ const Dashboard = () => {
             moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
           entry.attributes.investment.data.attributes.category.data.attributes
             .name === category
+        );
+      } else if (investment) {
+        return (
+          entry.attributes.period ===
+            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
+          entry.attributes.investment.data.attributes.name === investment
         );
       } else {
         return (
@@ -138,6 +145,26 @@ const Dashboard = () => {
     return patrimonyByMonth.reverse();
   };
 
+  const getTotalPatrimonyByMonthAndInvestment = (investment?: string) => {
+    const patrimonyByMonth = [];
+    for (let i = 0; i < 36; i++) {
+      const currentMonthEntries = filterByMonthSubstraction(i, '', investment);
+      if (currentMonthEntries?.length) {
+        const monthObj = {
+          period: moment(currentMonthEntries[0].attributes.period)
+            .locale('pt-br')
+            .format('MMM/YYYY'),
+          totalPatrimony: getMonthTotalValue(currentMonthEntries),
+        };
+        patrimonyByMonth.push(monthObj);
+      }
+    }
+
+    console.log(patrimonyByMonth);
+
+    return patrimonyByMonth.reverse();
+  };
+
   const { variation, currentPatrimonyValue, formattedVariation } =
     getTotalPatrimony();
 
@@ -219,20 +246,32 @@ const Dashboard = () => {
             negativeVariation={variationCripto < 0}
             icon={<Wallet color="grey100" />}
           />
+          {/* Todo: Pensar num novo summary card */}
+          <SummaryCard
+            title="Cripto"
+            elapsedTime="do último mês"
+            mainValue={toReal(currentPatrimonyValueCripto)}
+            variation={formattedVariationCripto + '%'}
+            negativeVariation={variationCripto < 0}
+            icon={<Wallet color="grey100" />}
+          />
         </S.SummaryCardsContainer>
 
         <S.GraphicCardContainer>
           <GraphicCard
+            title="Evolução do Patrimônio"
             data={getTotalPatrimonyByMonth()}
             dataKeyX="period"
             dataKeyY="totalPatrimony"
           />
 
           <GraphicCard
-            data={getTotalPatrimonyByMonth()}
+            title="Evolução Saldo FGTS"
+            data={getTotalPatrimonyByMonthAndInvestment('FGTS')}
             dataKeyX="period"
             dataKeyY="totalPatrimony"
           />
+
           {/* <GraphicCard /> */}
         </S.GraphicCardContainer>
       </S.Grid>
