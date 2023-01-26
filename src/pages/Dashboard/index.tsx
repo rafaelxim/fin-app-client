@@ -25,12 +25,24 @@ const Dashboard = () => {
     })();
   };
 
-  const filterByMonthSubstraction = (toSubtract: number = 0) => {
+  const filterByMonthSubstraction = (
+    toSubtract: number = 0,
+    category?: string
+  ) => {
     return monthBalances?.filter((entry) => {
-      return (
-        entry.attributes.period ===
-        moment().subtract(toSubtract, 'months').format('YYYY-MM-01')
-      );
+      if (category) {
+        return (
+          entry.attributes.period ===
+            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
+          entry.attributes.investment.data.attributes.category.data.attributes
+            .name === category
+        );
+      } else {
+        return (
+          entry.attributes.period ===
+          moment().subtract(toSubtract, 'months').format('YYYY-MM-01')
+        );
+      }
     });
   };
 
@@ -50,6 +62,38 @@ const Dashboard = () => {
         currentEntries = filterByMonthSubstraction(1);
         console.log({ currentEntries });
         pastEntries = filterByMonthSubstraction(2);
+      }
+
+      const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
+
+      const pastPatrimonyValue = getMonthTotalValue(pastEntries!);
+
+      const variation = (currentPatrimonyValue / pastPatrimonyValue - 1) * 100;
+
+      const formattedVariation = variation.toFixed(2);
+
+      return {
+        currentPatrimonyValue,
+        variation,
+        formattedVariation,
+      };
+    } else {
+      return {
+        currentPatrimonyValue: 0,
+        variation: 0,
+        formattedVariation: ' ',
+      };
+    }
+  };
+
+  const getTotalPatrimonyByCategory = (category: string) => {
+    if (monthBalances?.length) {
+      let currentEntries = filterByMonthSubstraction(0, category);
+      let pastEntries = filterByMonthSubstraction(1, category);
+      if (currentEntries?.length === 0) {
+        currentEntries = filterByMonthSubstraction(1, category);
+        console.log({ currentEntries });
+        pastEntries = filterByMonthSubstraction(2, category);
       }
 
       const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
@@ -97,6 +141,30 @@ const Dashboard = () => {
   const { variation, currentPatrimonyValue, formattedVariation } =
     getTotalPatrimony();
 
+  const {
+    variation: variationRendaFixa,
+    currentPatrimonyValue: currentPatrimonyValueRendaFixa,
+    formattedVariation: formattedVariationRendaFixa,
+  } = getTotalPatrimonyByCategory('Renda Fixa');
+
+  const {
+    variation: variationTD,
+    currentPatrimonyValue: currentPatrimonyValueTD,
+    formattedVariation: formattedVariationTD,
+  } = getTotalPatrimonyByCategory('Tesouro Direto');
+
+  const {
+    variation: variationCarteiras,
+    currentPatrimonyValue: currentPatrimonyValueCarteiras,
+    formattedVariation: formattedVariationCarteiras,
+  } = getTotalPatrimonyByCategory('Carteiras');
+
+  const {
+    variation: variationCripto,
+    currentPatrimonyValue: currentPatrimonyValueCripto,
+    formattedVariation: formattedVariationCripto,
+  } = getTotalPatrimonyByCategory('Crypto');
+
   return (
     <S.Wrapper>
       <S.Grid>
@@ -116,24 +184,50 @@ const Dashboard = () => {
             icon={<Wallet color="grey100" />}
           />
           <SummaryCard
-            title="-"
-            elapsedTime="-"
-            mainValue="-"
-            variation="-"
-            negativeVariation
+            title="Renda Fixa"
+            elapsedTime="do último mês"
+            mainValue={toReal(currentPatrimonyValueRendaFixa)}
+            variation={formattedVariationRendaFixa + '%'}
+            negativeVariation={variationRendaFixa < 0}
             icon={<Wallet color="grey100" />}
           />
           <SummaryCard
-            title="-"
-            elapsedTime="-"
-            mainValue="-"
-            variation="-"
-            negativeVariation
+            title="Tesouro Direto"
+            elapsedTime="do último mês"
+            mainValue={toReal(currentPatrimonyValueTD)}
+            variation={formattedVariationTD + '%'}
+            negativeVariation={variationTD < 0}
+            icon={<Wallet color="grey100" />}
+          />
+        </S.SummaryCardsContainer>
+
+        <S.SummaryCardsContainer>
+          <SummaryCard
+            title="Contas Correntes + FGTS"
+            elapsedTime="do último mês"
+            mainValue={toReal(currentPatrimonyValueCarteiras)}
+            variation={formattedVariationCarteiras + '%'}
+            negativeVariation={variationCarteiras < 0}
+            icon={<Wallet color="grey100" />}
+          />
+
+          <SummaryCard
+            title="Cripto"
+            elapsedTime="do último mês"
+            mainValue={toReal(currentPatrimonyValueCripto)}
+            variation={formattedVariationCripto + '%'}
+            negativeVariation={variationCripto < 0}
             icon={<Wallet color="grey100" />}
           />
         </S.SummaryCardsContainer>
 
         <S.GraphicCardContainer>
+          <GraphicCard
+            data={getTotalPatrimonyByMonth()}
+            dataKeyX="period"
+            dataKeyY="totalPatrimony"
+          />
+
           <GraphicCard
             data={getTotalPatrimonyByMonth()}
             dataKeyX="period"

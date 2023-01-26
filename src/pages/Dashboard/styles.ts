@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+// import { Wrapper as CardWrapper } from '../../components/CardWrapper/styles';
 
 export const Wrapper = styled.div`
   /* min-height: 100vh; */
@@ -9,14 +10,14 @@ export const Grid = styled.div`
   display: grid;
   min-height: 100vh;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 5rem 25rem;
-  grid-gap: 1.5rem;
+  grid-template-rows: 5rem 15rem 15rem 35rem;
+  grid-gap: 3rem 1.5rem;
   align-items: start;
 `;
 
 export const MenuContainer = styled.div`
   grid-column: 1 / span 3;
-  grid-row: 1 / 4;
+  grid-row: 1 / 6;
   align-self: stretch;
 `;
 
@@ -24,15 +25,15 @@ export const SummaryCardsContainer = styled.div`
   grid-column: 4 / -1;
   display: flex;
   gap: 3rem;
-  margin-top: 5rem;
+  justify-content: center;
 
   > div {
     flex: 1;
+    max-width: 40rem;
   }
 `;
 
 export const GraphicCardContainer = styled.div`
-  grid-row: 3 / 4;
   grid-column: 4 / -1;
   gap: 3rem;
   display: flex;

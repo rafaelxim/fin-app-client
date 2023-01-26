@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 export const Wrapper = styled.div`
   padding: 1.5rem 4rem;
   position: relative;
+  max-width: 40rem;
+
   ${({ theme }) => css`
     color: ${theme.colors.grey100};
   `}
