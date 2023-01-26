@@ -5,10 +5,16 @@ export type MenuItemProps = {
   children?: React.ReactNode;
   menu: string;
   selected?: boolean;
+  click: () => void;
 };
 
-const MenuItem = ({ children, menu, selected = false }: MenuItemProps) => (
-  <S.Wrapper role="menuitem" selected={selected}>
+const MenuItem = ({
+  children,
+  menu,
+  selected = false,
+  click,
+}: MenuItemProps) => (
+  <S.Wrapper onClick={() => click()} role="menuitem" selected={selected}>
     {children}
     <p>{menu}</p>
   </S.Wrapper>

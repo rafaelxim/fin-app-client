@@ -10,13 +10,18 @@ export default {
 } as Meta;
 
 export const Default: Story = (args) => (
-  <MenuItem menu="Menu Option" {...args}>
+  <MenuItem click={() => console.log('w')} menu="Menu Option" {...args}>
     <Wallet color="grey400" />
   </MenuItem>
 );
 
 export const Selected: Story = (args) => (
-  <MenuItem selected menu="Menu Option Selected" {...args}>
+  <MenuItem
+    click={() => console.log('w')}
+    selected
+    menu="Menu Option Selected"
+    {...args}
+  >
     <Wallet color="grey400" />
   </MenuItem>
 );
