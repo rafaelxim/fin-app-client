@@ -5,6 +5,7 @@ export default {
     primary500: '#1B2E37',
     primary600: '#1C2428',
     primary800: '#161819',
+    secondary: '#f50057',
     green100: '#5BED17',
     green300: '#398714',
     red100: '#DD3E3E',

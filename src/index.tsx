@@ -38,6 +38,23 @@ const client = new ApolloClient({
 });
 
 const MUItheme = createTheme({
+  palette: {
+    primary: {
+      main: theme.colors.primary600,
+    },
+    secondary: {
+      main: theme.colors.secondary,
+    },
+    text: {
+      primary: theme.colors.grey100,
+      secondary: theme.colors.grey400,
+      disabled: theme.colors.grey800,
+    },
+    background: {
+      default: theme.colors.primary800,
+      paper: theme.colors.primary200,
+    },
+  },
   typography: {
     // Tell MUI what's the font-size on the html element is.
     htmlFontSize: 10,

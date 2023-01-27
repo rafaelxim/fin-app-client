@@ -37,4 +37,28 @@ export const PageTitle = styled.div`
 
 export const PageContent = styled.div`
   grid-column: 3 / -1;
+  display: flex;
+  grid-gap: 3rem;
+`;
+
+export const FormContainer = styled.div`
+  ${({ theme }) => css`
+    flex: 4;
+    color: ${theme.colors.grey100};
+    padding: 3rem 2rem;
+    background-color: ${theme.colors.primary200};
+    border-radius: 2rem;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 10rem;
+  `}
+`;
+
+export const FormItem = styled.div`
+  /* background-color: aquamarine; */
+  min-height: 2rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
 `;
