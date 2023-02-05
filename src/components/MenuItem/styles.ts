@@ -3,8 +3,8 @@ import { MenuItemProps } from '.';
 
 const wrapperModifiers = {
   selected: (theme: DefaultTheme) => css`
-    background-color: ${theme.colors.primary200};
-    box-shadow: 0 0.4rem 0.4rem 0 #00000040;
+    /* background-color: ${theme.colors.primary200}; */
+    /* box-shadow: 0 0.4rem 0.4rem 0 #00000040; */
   `,
 };
 
@@ -14,10 +14,10 @@ export const Wrapper = styled.div<Pick<MenuItemProps, 'selected'>>`
     display: flex;
     align-items: center;
     gap: 2rem;
-    border-radius: 0.8rem;
+    /* border-radius: 0.8rem; */
     cursor: pointer;
     font-size: 1.8rem;
-    color: ${theme.colors.grey400};
+    color: ${theme.colors.grey100};
     ${selected! && wrapperModifiers.selected(theme)}
 
     transition: all .5s ease;

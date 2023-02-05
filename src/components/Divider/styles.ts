@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   margin: 1.3rem 0;
-  height: 0.1rem;
+  height: 0.2rem;
 
   background: linear-gradient(
     270deg,

@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
 export const IconWrapper = styled.div`
   ${({ theme }) => css`
     background-color: ${theme.colors.primary600};
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     padding: 1.2rem;
     position: absolute;
     left: 2.3rem;

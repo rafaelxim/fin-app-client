@@ -56,3 +56,34 @@ export const QUERY_GET_ALL_ENTRIES = gql`
     }
   }
 `;
+
+export const QUERY_GET_ALL_INVESTMENTS = gql`
+  query GET_ALL_INVESTMENTS {
+    investments(pagination: { limit: 999999 }) {
+      data {
+        attributes {
+          name
+          category {
+            data {
+              attributes {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_GET_ALL_CATEGORIES = gql`
+  query GET_ALL_CATEGORIES {
+    categories(pagination: { limit: 999999 }) {
+      data {
+        attributes {
+          name
+        }
+      }
+    }
+  }
+`;

@@ -47,7 +47,7 @@ const MUItheme = createTheme({
     },
     text: {
       primary: theme.colors.grey100,
-      secondary: theme.colors.grey400,
+      secondary: theme.colors.grey100,
       disabled: theme.colors.grey800,
     },
     background: {

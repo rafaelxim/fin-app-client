@@ -6,13 +6,13 @@ import SummaryCard from '../../components/SummaryCard';
 import Wallet from '../../assets/Icons/Wallet';
 import GraphicCard from '../../components/GraphicCard';
 import { useLazyQuery } from '@apollo/client';
-import { EntryEntity, GetEntriesByMonthResponse } from '../../types/dbTypes';
+import { EntryEntity, Query } from '../../types/dbTypes';
 import { QUERY_GET_ALL_ENTRIES } from './queries';
 import { toReal } from '../../utils/formaters/helpers';
 
 const Dashboard = () => {
   const [monthBalances, setMonthBalances] = useState<EntryEntity[]>();
-  const [lazy] = useLazyQuery<GetEntriesByMonthResponse>(QUERY_GET_ALL_ENTRIES);
+  const [lazy] = useLazyQuery<Query>(QUERY_GET_ALL_ENTRIES);
 
   useEffect(() => {
     executeQuery();
@@ -21,7 +21,7 @@ const Dashboard = () => {
   const executeQuery = () => {
     void (async () => {
       const res = await lazy();
-      setMonthBalances(res.data?.entries.data);
+      setMonthBalances(res.data?.entries?.data);
     })();
   };
 
@@ -33,20 +33,20 @@ const Dashboard = () => {
     return monthBalances?.filter((entry) => {
       if (category) {
         return (
-          entry.attributes.period ===
+          entry?.attributes?.period ===
             moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry.attributes.investment.data.attributes.category.data.attributes
-            .name === category
+          entry?.attributes?.investment?.data?.attributes?.category?.data
+            ?.attributes?.name === category
         );
       } else if (investment) {
         return (
-          entry.attributes.period ===
+          entry?.attributes?.period ===
             moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry.attributes.investment.data.attributes.name === investment
+          entry?.attributes?.investment?.data?.attributes?.name === investment
         );
       } else {
         return (
-          entry.attributes.period ===
+          entry.attributes?.period ===
           moment().subtract(toSubtract, 'months').format('YYYY-MM-01')
         );
       }
@@ -55,7 +55,10 @@ const Dashboard = () => {
 
   const getMonthTotalValue = (currentEntries: EntryEntity[]) => {
     const res = currentEntries.reduce((prev, curr) => {
-      return prev + curr.attributes.value;
+      if (curr.attributes) {
+        return prev + curr.attributes.value;
+      }
+      return prev;
     }, 0);
 
     return res;
@@ -131,7 +134,7 @@ const Dashboard = () => {
       const currentMonthEntries = filterByMonthSubstraction(i);
       if (currentMonthEntries?.length) {
         const monthObj = {
-          period: moment(currentMonthEntries[0].attributes.period)
+          period: moment(currentMonthEntries[0].attributes?.period)
             .locale('pt-br')
             .format('MMM/YYYY'),
           totalPatrimony: getMonthTotalValue(currentMonthEntries),
@@ -151,7 +154,7 @@ const Dashboard = () => {
       const currentMonthEntries = filterByMonthSubstraction(i, '', investment);
       if (currentMonthEntries?.length) {
         const monthObj = {
-          period: moment(currentMonthEntries[0].attributes.period)
+          period: moment(currentMonthEntries[0].attributes?.period)
             .locale('pt-br')
             .format('MMM/YYYY'),
           totalPatrimony: getMonthTotalValue(currentMonthEntries),

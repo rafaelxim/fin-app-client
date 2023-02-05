@@ -29,7 +29,7 @@ export const HeaderContainer = styled.div`
 
 export const PageTitle = styled.div`
   ${({ theme }) => css`
-    color: ${theme.colors.grey400};
+    color: ${theme.colors.grey100};
     font-weight: bold;
     font-size: 1.8rem;
   `}
@@ -47,7 +47,7 @@ export const FormContainer = styled.div`
     color: ${theme.colors.grey100};
     padding: 3rem 2rem;
     background-color: ${theme.colors.primary200};
-    border-radius: 2rem;
+    /* border-radius: 2rem; */
     display: grid;
     grid-gap: 2rem;
     grid-template-columns: repeat(3, 1fr);

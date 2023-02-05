@@ -7,11 +7,17 @@ export const Content = styled.div`
   `}
 `;
 export const Graphic = styled.div`
-  height: 20rem;
-  border-radius: 1rem;
-  background: linear-gradient(112.32deg, #1c2428 4.17%, #767676 177.91%);
-  position: relative;
-  top: -4rem;
+  ${({ theme }) => css`
+    height: 20rem;
+    /* border-radius: 1rem; */
+    background: linear-gradient(
+      112.32deg,
+      ${theme.colors.primary600} 20.17%,
+      ${theme.colors.grey500} 200.91%
+    );
+    position: relative;
+    top: -4rem;
+  `}
 `;
 export const CardInfo = styled.div`
   position: relative;
@@ -29,7 +35,7 @@ export const LastUpdate = styled.div`
   gap: 1rem;
   align-items: center;
   ${({ theme }) => css`
-    color: ${theme.colors.grey400};
+    color: ${theme.colors.grey100};
   `}
 `;
 export const UpdateDescription = styled.div`

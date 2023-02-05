@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from './styles';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
+import { CategoryEntity, InvestmentEntity } from '../../types/dbTypes';
 
 const CustomStepLabel = styled(StepLabel)<StepLabelProps>(({ theme }) => ({
   '.MuiStepIcon-root.Mui-completed': {
@@ -14,8 +15,22 @@ const CustomStepLabel = styled(StepLabel)<StepLabelProps>(({ theme }) => ({
   },
 }));
 
-const CustomStepper = () => {
+export type CustomSteps = {
+  category: CategoryEntity;
+  investments: InvestmentEntity[];
+};
+
+type Props = {
+  steps?: CustomSteps[];
+  onChangeStep: (n: number) => void;
+};
+
+const CustomStepper = ({ steps, onChangeStep }: Props) => {
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    onChangeStep(activeStep);
+  }, [activeStep, steps]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -29,30 +44,12 @@ const CustomStepper = () => {
   //   setActiveStep(0);
   // };
 
-  const steps = [
-    {
-      label: 'Renda Fixa',
-    },
-    {
-      label: 'Cripto',
-    },
-    {
-      label: 'Contas',
-    },
-    {
-      label: 'Ações',
-    },
-    {
-      label: 'FII',
-    },
-  ];
-
   return (
     <S.StepperCard>
       <Stepper activeStep={activeStep} orientation="vertical">
-        {steps.map((step, index) => (
-          <Step key={step.label}>
-            <CustomStepLabel>{step.label}</CustomStepLabel>
+        {steps?.map((step, index) => (
+          <Step key={step.category.attributes?.name}>
+            <CustomStepLabel>{step.category.attributes?.name}</CustomStepLabel>
             <StepContent>
               <Box sx={{ mb: 2 }}>
                 <div>

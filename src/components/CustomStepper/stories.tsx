@@ -7,4 +7,6 @@ export default {
   component: CustomStepper,
 } as Meta;
 
-export const Default: Story = () => <CustomStepper />;
+export const Default: Story = () => (
+  <CustomStepper onChangeStep={() => console.log('e')} />
+);
