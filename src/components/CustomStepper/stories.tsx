@@ -8,5 +8,8 @@ export default {
 } as Meta;
 
 export const Default: Story = () => (
-  <CustomStepper onChangeStep={() => console.log('e')} />
+  <CustomStepper
+    onChangeStep={() => console.log('e')}
+    onFinish={() => console.log('e')}
+  />
 );

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import CustomStepper, { CustomSteps } from '../../components/CustomStepper';
-import TextField from '../../components/TextField';
 import Menu from '../../components/Menu';
 import * as S from './styles';
 import {
@@ -16,6 +15,7 @@ import {
   CategoryEntityResponseCollection,
   InvestmentEntityResponseCollection,
 } from '../../types/dbTypes';
+import CurrencyField from '../../components/CurrencyField';
 
 const InvestmentRegistration = () => {
   const [investmentsRequest] =
@@ -35,6 +35,12 @@ const InvestmentRegistration = () => {
   useEffect(() => {
     executeQueries();
   }, []);
+
+  useEffect(() => {
+    if (!currentCategory) {
+      handleStepChange(0);
+    }
+  }, [investments, categories]);
 
   const executeQueries = () => {
     void (async () => {
@@ -61,12 +67,15 @@ const InvestmentRegistration = () => {
   };
 
   const handleStepChange = (n: number) => {
+    console.log('----- called ----');
     const categories = formatInvestmentsByCategory();
+    console.log({ categories });
     if (categories) {
       setCurrentCategory(categories[n]);
     }
   };
 
+  console.log({ currentCategory });
   return (
     <S.Wrapper>
       <S.Grid>
@@ -78,14 +87,15 @@ const InvestmentRegistration = () => {
         </S.MenuContainer>
         <S.PageContent>
           <CustomStepper
-            onChangeStep={handleStepChange}
+            onFinish={() => console.log('finished')}
+            onChangeStep={(n: number) => handleStepChange(n)}
             steps={formatInvestmentsByCategory()}
           />
           <S.FormContainer>
             {currentCategory?.investments.map((i) => {
               return (
                 <S.FormItem key={i.id}>
-                  <TextField
+                  <CurrencyField
                     label={i.attributes?.name}
                     variant="outlined"
                     fullWidth

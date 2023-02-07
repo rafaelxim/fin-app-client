@@ -45,12 +45,12 @@ export const FormContainer = styled.div`
   ${({ theme }) => css`
     flex: 4;
     color: ${theme.colors.grey100};
-    padding: 3rem 2rem;
+    padding: 5rem 10rem;
     background-color: ${theme.colors.primary200};
     /* border-radius: 2rem; */
     display: grid;
-    grid-gap: 2rem;
-    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 3rem 5rem;
+    grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 10rem;
   `}
 `;

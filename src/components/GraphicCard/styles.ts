@@ -12,7 +12,7 @@ export const Graphic = styled.div`
     /* border-radius: 1rem; */
     background: linear-gradient(
       112.32deg,
-      ${theme.colors.primary600} 20.17%,
+      ${theme.colors.primary700} 20.17%,
       ${theme.colors.grey500} 200.91%
     );
     position: relative;

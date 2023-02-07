@@ -39,6 +39,7 @@ const client = new ApolloClient({
 
 const MUItheme = createTheme({
   palette: {
+    mode: 'dark',
     primary: {
       main: theme.colors.primary600,
     },

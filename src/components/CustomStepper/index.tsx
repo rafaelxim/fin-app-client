@@ -11,7 +11,7 @@ import { CategoryEntity, InvestmentEntity } from '../../types/dbTypes';
 
 const CustomStepLabel = styled(StepLabel)<StepLabelProps>(({ theme }) => ({
   '.MuiStepIcon-root.Mui-completed': {
-    color: theme.colors.green100,
+    color: theme.colors.secondary,
   },
 }));
 
@@ -23,17 +23,21 @@ export type CustomSteps = {
 type Props = {
   steps?: CustomSteps[];
   onChangeStep: (n: number) => void;
+  onFinish: () => void;
 };
 
-const CustomStepper = ({ steps, onChangeStep }: Props) => {
+const CustomStepper = ({ steps, onChangeStep, onFinish }: Props) => {
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     onChangeStep(activeStep);
-  }, [activeStep, steps]);
+  }, [activeStep]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep === steps!.length - 1) {
+      onFinish();
+    }
   };
 
   const handleBack = () => {
@@ -58,7 +62,7 @@ const CustomStepper = ({ steps, onChangeStep }: Props) => {
                     onClick={handleNext}
                     sx={{ mt: 1, mr: 1 }}
                   >
-                    {index === steps.length - 1 ? 'Finish' : 'Continue'}
+                    {index === steps.length - 1 ? 'Finalizar' : 'Continuar'}
                   </Button>
                   <Button
                     disabled={index === 0}

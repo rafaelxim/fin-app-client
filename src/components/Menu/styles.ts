@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   ${({ theme }) => css`
-    background-color: ${theme.colors.primary600};
+    background-color: ${theme.colors.primary700};
     /* border-radius: 1.3rem; */
     padding: 0 3rem;
 
