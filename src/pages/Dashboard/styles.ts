@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import city from '../../assets/futuristic-city.jpg';
 // import { Wrapper as CardWrapper } from '../../components/CardWrapper/styles';
 
 export const Wrapper = styled.div`
@@ -7,12 +8,23 @@ export const Wrapper = styled.div`
 `;
 
 export const Grid = styled.div`
-  display: grid;
-  min-height: 100vh;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 5rem 15rem 15rem 35rem;
-  grid-gap: 3rem 1.5rem;
-  align-items: start;
+  ${({ theme }) => css`
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 5rem 15rem 15rem 35rem;
+    grid-gap: 3rem 1.5rem;
+    align-items: start;
+
+    background-position: center;
+    background-size: cover;
+    background-image: linear-gradient(
+        0deg,
+        rgb(50, 68, 127, 0.8),
+        rgb(50, 68, 127, 0.8)
+      ),
+      url(${city});
+  `}
 `;
 
 export const MenuContainer = styled.div`
