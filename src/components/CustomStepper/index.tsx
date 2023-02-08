@@ -34,9 +34,10 @@ const CustomStepper = ({ steps, onChangeStep, onFinish }: Props) => {
   }, [activeStep]);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep === steps!.length - 1) {
       onFinish();
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 

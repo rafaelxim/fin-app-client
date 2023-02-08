@@ -62,3 +62,9 @@ export const FormItem = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const ModalContent = styled.div``;
+
+export const DateContainer = styled.div`
+  padding: 2rem 0;
+`;

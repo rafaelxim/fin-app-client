@@ -812,7 +812,7 @@ export type Query = {
   entry?: Maybe<EntryEntityResponse>;
   entries?: Maybe<EntryEntityResponseCollection>;
   investment?: Maybe<InvestmentEntityResponse>;
-  investments?: Maybe<InvestmentEntityResponseCollection>;
+  investments: Maybe<InvestmentEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
 };
 

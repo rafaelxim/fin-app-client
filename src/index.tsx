@@ -10,12 +10,14 @@ import {
   ThemeProvider as MUIThemeProvider,
   createTheme,
 } from '@mui/material/styles';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
 import GlobalStyles from './styles/global';
 import Dashboard from './pages/Dashboard';
 import InvestmentRegistration from './pages/InvestmentRegistration';
 import 'moment/locale/pt-br';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const router = createBrowserRouter([
   {
@@ -53,7 +55,7 @@ const MUItheme = createTheme({
     },
     background: {
       default: theme.colors.primary800,
-      paper: theme.colors.primary200,
+      paper: theme.colors.primary700,
     },
   },
   typography: {
@@ -68,10 +70,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <ThemeProvider theme={theme}>
     <MUIThemeProvider theme={MUItheme}>
-      <ApolloProvider client={client}>
-        <GlobalStyles />
-        <RouterProvider router={router} />
-      </ApolloProvider>
+      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="pt-br">
+        <ApolloProvider client={client}>
+          <GlobalStyles />
+          <RouterProvider router={router} />
+        </ApolloProvider>
+      </LocalizationProvider>
     </MUIThemeProvider>
   </ThemeProvider>
 );
