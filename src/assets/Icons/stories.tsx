@@ -8,8 +8,6 @@ export default {
   component: Wallet,
 } as Meta;
 
-export const Default: Story = (args) => <Wallet color="primary700" {...args} />;
+export const Default: Story = (args) => <Wallet color="primary" {...args} />;
 
-export const UpdateIcon: Story = (args) => (
-  <Update color="primary700" {...args} />
-);
+export const UpdateIcon: Story = (args) => <Update color="primary" {...args} />;

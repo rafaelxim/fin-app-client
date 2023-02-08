@@ -43,19 +43,19 @@ const MUItheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: theme.colors.primary600,
+      main: theme.colors.primary,
     },
     secondary: {
       main: theme.colors.secondary,
     },
     text: {
-      primary: theme.colors.grey100,
-      secondary: theme.colors.grey100,
-      disabled: theme.colors.grey800,
+      primary: theme.colors.text.primary,
+      secondary: theme.colors.text.primary,
+      disabled: theme.colors.text.disabled,
     },
     background: {
-      default: theme.colors.primary800,
-      paper: theme.colors.primary700,
+      default: theme.colors.background.default,
+      paper: theme.colors.background.paper,
     },
   },
   typography: {

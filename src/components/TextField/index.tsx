@@ -4,20 +4,20 @@ import styled from 'styled-components';
 
 const TextInput = styled(MUIField)<TextFieldProps>(({ theme }) => ({
   '& label.Mui-focused': {
-    color: theme.colors.grey100,
+    color: theme.colors.text.primary,
   },
   '& .MuiInput-underline:after': {
-    borderBottomColor: theme.colors.grey100,
+    borderBottomColor: theme.colors.text.primary,
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: theme.colors.grey100,
+      borderColor: theme.colors.text.primary,
     },
     '&:hover fieldset': {
-      borderColor: theme.colors.grey100,
+      borderColor: theme.colors.text.primary,
     },
     '&.Mui-focused fieldset': {
-      borderColor: theme.colors.grey100,
+      borderColor: theme.colors.text.primary,
     },
   },
 }));

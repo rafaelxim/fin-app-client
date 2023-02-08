@@ -3,7 +3,7 @@ import { MenuItemProps } from '.';
 
 const wrapperModifiers = {
   selected: (theme: DefaultTheme) => css`
-    /* background-color: ${theme.colors.primary200}; */
+    /* background-color: ${theme.colors.background.paper}; */
     /* box-shadow: 0 0.4rem 0.4rem 0 #00000040; */
   `,
 };
@@ -17,13 +17,13 @@ export const Wrapper = styled.div<Pick<MenuItemProps, 'selected'>>`
     /* border-radius: 0.8rem; */
     cursor: pointer;
     font-size: 1.8rem;
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
     ${selected! && wrapperModifiers.selected(theme)}
 
     transition: all .5s ease;
 
     :hover {
-      background-color: ${theme.colors.primary200};
+      background-color: ${theme.colors.background.default};
     }
   `}
 `;

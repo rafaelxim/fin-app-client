@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   ${({ theme }) => css`
-    background-color: ${theme.colors.primary700};
+    background-color: ${theme.colors.background.paper};
     /* border-radius: 1.3rem; */
     padding: 0 3rem;
 
@@ -19,7 +19,7 @@ export const LogoWrapper = styled.div`
     text-align: center;
     font-size: 2.2rem;
     font-weight: 700;
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
   `}
 `;
 

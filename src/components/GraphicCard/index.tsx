@@ -29,7 +29,7 @@ const GraphicCard = ({ data, dataKeyX, dataKeyY, title }: GraphicCardProps) => {
 
           <Divider />
           <S.LastUpdate>
-            <UpdateIcon color="grey100" />
+            <UpdateIcon color="primary" />
             <S.UpdateDescription>atualizado em tempo real</S.UpdateDescription>
           </S.LastUpdate>
         </S.CardInfo>

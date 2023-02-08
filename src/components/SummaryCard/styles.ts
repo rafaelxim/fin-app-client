@@ -1,3 +1,4 @@
+import { lighten } from 'polished';
 import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -6,13 +7,13 @@ export const Wrapper = styled.div`
   max-width: 40rem;
 
   ${({ theme }) => css`
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
   `}
 `;
 
 export const IconWrapper = styled.div`
   ${({ theme }) => css`
-    background-color: ${theme.colors.primary700};
+    background: ${lighten(0.1, theme.colors.background.paper)};
     /* border-radius: 1rem; */
     padding: 1.2rem;
     position: absolute;

@@ -14,7 +14,7 @@ export const Default: Story = (args) => (
     elapsedTime="do último ano"
     mainValue="$ 50.000,00"
     variation="+5%"
-    icon={<Wallet color="grey100" />}
+    icon={<Wallet color="primary" />}
     {...args}
   />
 );
@@ -26,7 +26,7 @@ export const NegativeVariation: Story = (args) => (
     mainValue="$ 50.000,00"
     variation="-5%"
     negativeVariation
-    icon={<Wallet color="grey100" />}
+    icon={<Wallet color="primary" />}
     {...args}
   />
 );

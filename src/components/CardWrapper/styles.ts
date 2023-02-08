@@ -6,9 +6,9 @@ type WrapperProps = {
 
 export const Wrapper = styled.div<WrapperProps>`
   ${({ theme, topMargin }) => css`
-    background-color: ${theme.colors.primary200};
+    background-color: ${theme.colors.background.paper};
     /* border-radius: 2rem; */
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
     margin-top: ${topMargin ? '2rem' : '0'};
     /* box-shadow: 8px 8px 16px 4px #000000; */
   `}

@@ -27,7 +27,7 @@ const GlobalStyles = createGlobalStyle`
       }
     }
     body {
-      background-color: ${theme.colors.primary800};
+      background-color: ${theme.colors.background.default};
     }
   `}
 `;

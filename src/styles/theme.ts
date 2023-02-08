@@ -1,21 +1,17 @@
 export default {
   colors: {
-    primary200: '#213262',
-    primary400: '#2B3338',
-    primary500: '#1B2E37',
-    primary600: '#d2dcf2',
-    primary700: '#1a2a54',
-    primary800: '#32447f',
+    primary: '#d2dcf2',
     secondary: '#f50057',
     green100: '#5BED17',
-    green300: '#398714',
     red100: '#DD3E3E',
-    blue100: '#44A0FF',
-    grey100: '#d2dcf2',
-    grey200: '#D3D3D3',
-    grey400: '#BBBBBB',
-    grey500: '#8c8c8c',
-    grey600: '#616161',
-    grey800: '#333333',
+    background: {
+      default: '#32447f',
+      paper: '#1a2a54',
+    },
+    text: {
+      primary: '#d2dcf2',
+      secondary: '#f50057',
+      disabled: '#333333',
+    },
   },
 };

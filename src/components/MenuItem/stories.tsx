@@ -11,7 +11,7 @@ export default {
 
 export const Default: Story = (args) => (
   <MenuItem click={() => console.log('w')} menu="Menu Option" {...args}>
-    <Wallet color="grey100" />
+    <Wallet color="primary" />
   </MenuItem>
 );
 
@@ -22,6 +22,6 @@ export const Selected: Story = (args) => (
     menu="Menu Option Selected"
     {...args}
   >
-    <Wallet color="grey100" />
+    <Wallet color="primary" />
   </MenuItem>
 );

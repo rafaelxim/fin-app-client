@@ -211,7 +211,7 @@ const Dashboard = () => {
             mainValue={toReal(currentPatrimonyValue)}
             variation={formattedVariation + '%'}
             negativeVariation={variation < 0}
-            icon={<Wallet color="grey100" />}
+            icon={<Wallet color="primary" />}
           />
           <SummaryCard
             title="Renda Fixa"
@@ -219,7 +219,7 @@ const Dashboard = () => {
             mainValue={toReal(currentPatrimonyValueRendaFixa)}
             variation={formattedVariationRendaFixa + '%'}
             negativeVariation={variationRendaFixa < 0}
-            icon={<Wallet color="grey100" />}
+            icon={<Wallet color="primary" />}
           />
           <SummaryCard
             title="Tesouro Direto"
@@ -227,7 +227,7 @@ const Dashboard = () => {
             mainValue={toReal(currentPatrimonyValueTD)}
             variation={formattedVariationTD + '%'}
             negativeVariation={variationTD < 0}
-            icon={<Wallet color="grey100" />}
+            icon={<Wallet color="primary" />}
           />
         </S.SummaryCardsContainer>
 
@@ -238,7 +238,7 @@ const Dashboard = () => {
             mainValue={toReal(currentPatrimonyValueCarteiras)}
             variation={formattedVariationCarteiras + '%'}
             negativeVariation={variationCarteiras < 0}
-            icon={<Wallet color="grey100" />}
+            icon={<Wallet color="primary" />}
           />
 
           <SummaryCard
@@ -247,7 +247,7 @@ const Dashboard = () => {
             mainValue={toReal(currentPatrimonyValueCripto)}
             variation={formattedVariationCripto + '%'}
             negativeVariation={variationCripto < 0}
-            icon={<Wallet color="grey100" />}
+            icon={<Wallet color="primary" />}
           />
           {/* Todo: Pensar num novo summary card */}
           <SummaryCard
@@ -256,7 +256,7 @@ const Dashboard = () => {
             mainValue={toReal(currentPatrimonyValueCripto)}
             variation={formattedVariationCripto + '%'}
             negativeVariation={variationCripto < 0}
-            icon={<Wallet color="grey100" />}
+            icon={<Wallet color="primary" />}
           />
         </S.SummaryCardsContainer>
 

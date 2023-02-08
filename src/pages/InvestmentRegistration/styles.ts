@@ -29,7 +29,7 @@ export const HeaderContainer = styled.div`
 
 export const PageTitle = styled.div`
   ${({ theme }) => css`
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
     font-weight: bold;
     font-size: 1.8rem;
   `}
@@ -44,9 +44,9 @@ export const PageContent = styled.div`
 export const FormContainer = styled.div`
   ${({ theme }) => css`
     flex: 4;
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
     padding: 5rem 10rem;
-    background-color: ${theme.colors.primary200};
+    background-color: ${theme.colors.background.paper};
     /* border-radius: 2rem; */
     display: grid;
     grid-gap: 3rem 5rem;

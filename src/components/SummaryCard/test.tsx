@@ -13,7 +13,7 @@ describe('<SummaryCard />', () => {
         elapsedTime="do último ano"
         mainValue="$ 50.000,00"
         variation="+5%"
-        icon={<Wallet color="grey100" />}
+        icon={<Wallet color="primary" />}
       />
     );
     expect(screen.getByTestId('summary-card')).toBeInTheDocument();
@@ -27,7 +27,7 @@ describe('<SummaryCard />', () => {
         mainValue="$ 50.000,00"
         variation="-5%"
         negativeVariation
-        icon={<Wallet color="grey100" />}
+        icon={<Wallet color="primary" />}
       />
     );
     expect(screen.getByTestId('variation-value')).toHaveStyle({

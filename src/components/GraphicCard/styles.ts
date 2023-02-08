@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 export const Content = styled.div`
   padding: 2.5rem 2.5rem 0 2.5rem;
   ${({ theme }) => css`
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
   `}
 `;
 export const Graphic = styled.div`
@@ -12,8 +12,8 @@ export const Graphic = styled.div`
     /* border-radius: 1rem; */
     background: linear-gradient(
       112.32deg,
-      ${theme.colors.primary700} 20.17%,
-      ${theme.colors.grey500} 200.91%
+      ${theme.colors.background.paper} 20.17%,
+      ${theme.colors.primary} 200.91%
     );
     position: relative;
     top: -4rem;
@@ -35,7 +35,7 @@ export const LastUpdate = styled.div`
   gap: 1rem;
   align-items: center;
   ${({ theme }) => css`
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
   `}
 `;
 export const UpdateDescription = styled.div`

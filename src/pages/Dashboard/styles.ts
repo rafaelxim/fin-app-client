@@ -51,7 +51,7 @@ export const HeaderContainer = styled.div`
 
 export const PageTitle = styled.div`
   ${({ theme }) => css`
-    color: ${theme.colors.grey100};
+    color: ${theme.colors.text.primary};
     font-weight: bold;
     font-size: 1.8rem;
   `}
