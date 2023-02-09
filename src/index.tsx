@@ -11,6 +11,7 @@ import {
   createTheme,
 } from '@mui/material/styles';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
 import GlobalStyles from './styles/global';
@@ -18,7 +19,9 @@ import Dashboard from './pages/Dashboard';
 import InvestmentRegistration from './pages/InvestmentRegistration';
 import 'moment/locale/pt-br';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import FullScreenLoader from './components/FullScreenLoader';
+import FullScreenLoader from './features/FullScreenLoader';
+import { store } from './app/store';
+import { SnackbarProvider } from 'notistack';
 
 const router = createBrowserRouter([
   {
@@ -69,15 +72,22 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <ThemeProvider theme={theme}>
-    <MUIThemeProvider theme={MUItheme}>
-      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="pt-br">
-        <ApolloProvider client={client}>
-          <GlobalStyles />
-          <FullScreenLoader open={false} />
-          <RouterProvider router={router} />
-        </ApolloProvider>
-      </LocalizationProvider>
-    </MUIThemeProvider>
-  </ThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <MUIThemeProvider theme={MUItheme}>
+        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="pt-br">
+          <ApolloProvider client={client}>
+            <SnackbarProvider
+              maxSnack={3}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+              <GlobalStyles />
+              <FullScreenLoader />
+              <RouterProvider router={router} />
+            </SnackbarProvider>
+          </ApolloProvider>
+        </LocalizationProvider>
+      </MUIThemeProvider>
+    </ThemeProvider>
+  </Provider>
 );

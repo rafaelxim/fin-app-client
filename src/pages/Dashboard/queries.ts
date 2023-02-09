@@ -61,6 +61,7 @@ export const QUERY_GET_ALL_INVESTMENTS = gql`
   query GET_ALL_INVESTMENTS {
     investments(pagination: { limit: 999999 }) {
       data {
+        id
         attributes {
           name
           category {
@@ -83,6 +84,28 @@ export const QUERY_GET_ALL_CATEGORIES = gql`
         attributes {
           name
         }
+      }
+    }
+  }
+`;
+
+export const CREATE_ENTRY = gql`
+  mutation createEntry(
+    $period: Date
+    $value: Float
+    $investment: ID
+    $published: DateTime
+  ) {
+    createEntry(
+      data: {
+        period: $period
+        value: $value
+        investment: $investment
+        publishedAt: $published
+      }
+    ) {
+      data {
+        id
       }
     }
   }

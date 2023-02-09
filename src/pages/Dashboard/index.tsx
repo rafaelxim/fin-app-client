@@ -9,12 +9,19 @@ import { useLazyQuery } from '@apollo/client';
 import { EntryEntity, Query } from '../../types/dbTypes';
 import { QUERY_GET_ALL_ENTRIES } from './queries';
 import { toReal } from '../../utils/formaters/helpers';
+import { useAppDispatch } from '../../app/hooks';
+import {
+  activate,
+  deactivate,
+} from '../../features/FullScreenLoader/loaderSlice';
 
 const Dashboard = () => {
   const [monthBalances, setMonthBalances] = useState<EntryEntity[]>();
   const [lazy] = useLazyQuery<Query>(QUERY_GET_ALL_ENTRIES);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(activate());
     executeQuery();
   }, []);
 
@@ -22,6 +29,7 @@ const Dashboard = () => {
     void (async () => {
       const res = await lazy();
       setMonthBalances(res.data?.entries?.data);
+      dispatch(deactivate());
     })();
   };
 

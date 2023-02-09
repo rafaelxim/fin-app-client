@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import CustomStepper, { CustomSteps } from '../../components/CustomStepper';
 import Menu from '../../components/Menu';
 import Dialog from '@mui/material/Dialog';
@@ -11,6 +11,7 @@ import * as S from './styles';
 import {
   QUERY_GET_ALL_INVESTMENTS,
   QUERY_GET_ALL_CATEGORIES,
+  CREATE_ENTRY,
 } from '../Dashboard/queries';
 import {
   CategoryEntityResponseCollection,
@@ -22,6 +23,19 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Button from '@mui/material/Button';
 import moment, { Moment } from 'moment';
 import TextField from '../../components/TextField';
+import { useAppDispatch } from '../../app/hooks';
+import {
+  activate,
+  deactivate,
+} from '../../features/FullScreenLoader/loaderSlice';
+import { NumberFormatValues } from 'react-number-format';
+import { useSnackbar } from 'notistack';
+
+type InvestmentValues = {
+  [key: string]: {
+    value: number;
+  };
+};
 
 const InvestmentRegistration = () => {
   const [investmentsRequest] = useLazyQuery<Pick<Query, 'investments'>>(
@@ -30,6 +44,7 @@ const InvestmentRegistration = () => {
   const [categoriesRequest] = useLazyQuery<Pick<Query, 'categories'>>(
     QUERY_GET_ALL_CATEGORIES
   );
+  const [createEntry] = useMutation(CREATE_ENTRY);
   const [investments, setInvestments] =
     useState<InvestmentEntityResponseCollection | null>();
   const [categories, setCategories] =
@@ -39,8 +54,12 @@ const InvestmentRegistration = () => {
   const [dateValue, setDateValue] = useState<Moment | null>(
     moment('2023-01-01')
   );
+  const [investmentValues, setInvestmentValues] = useState<InvestmentValues>();
+  const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
+    dispatch(activate());
     executeQueries();
   }, []);
 
@@ -56,6 +75,7 @@ const InvestmentRegistration = () => {
       setInvestments(res.data?.investments);
       const resCat = await categoriesRequest();
       setCategories(resCat.data?.categories);
+      dispatch(deactivate());
     })();
   };
 
@@ -90,6 +110,39 @@ const InvestmentRegistration = () => {
     setDateValue(newValue);
   };
 
+  const handleChangeInvestment = (
+    val: NumberFormatValues,
+    investmentId: string
+  ) => {
+    setInvestmentValues({
+      ...investmentValues,
+      [investmentId]: {
+        value: val.floatValue!,
+      },
+    });
+  };
+
+  const sendData = async () => {
+    setFinishModalOpen(false);
+    dispatch(activate());
+    // eslint-disable-next-line @typescript-eslint/promise-function-async
+    const promises = Object.keys(investmentValues!).map((i) => {
+      return createEntry({
+        variables: {
+          period: moment(dateValue).format('YYYY-MM-DD'),
+          value: investmentValues![i].value,
+          investment: i,
+          published: moment(),
+        },
+      });
+    });
+
+    await Promise.all(promises);
+    dispatch(deactivate());
+    setInvestmentValues(undefined);
+    enqueueSnackbar('Dados enviados com sucesso', { variant: 'success' });
+  };
+
   return (
     <S.Wrapper>
       <Dialog
@@ -116,7 +169,7 @@ const InvestmentRegistration = () => {
           </S.DateContainer>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseFinishModal} autoFocus>
+          <Button onClick={sendData} autoFocus>
             Enviar
           </Button>
         </DialogActions>
@@ -142,7 +195,12 @@ const InvestmentRegistration = () => {
                     label={i.attributes?.name}
                     variant="outlined"
                     fullWidth
-                    onValueChange={(v) => console.log(v)}
+                    onValueChange={(v) => handleChangeInvestment(v, i.id!)}
+                    value={
+                      investmentValues && investmentValues[i.id!]
+                        ? investmentValues[i.id!].value
+                        : 0
+                    }
                   />
                 </S.FormItem>
               );

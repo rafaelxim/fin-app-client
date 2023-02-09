@@ -8,13 +8,14 @@ type MUIPickedProps = Pick<TextFieldProps, 'label' | 'variant' | 'fullWidth'>;
 
 type Props = {
   onValueChange: (v: NumberFormatValues) => void;
+  value: number;
 } & MUIPickedProps;
 
 const CurrencyField = (props: Props) => (
   <NumericFormat
     {...props}
     prefix={'R$ '}
-    value={12323.5888}
+    value={props.value}
     customInput={TextField}
     decimalScale={2}
     decimalSeparator=","
