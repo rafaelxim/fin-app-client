@@ -18,6 +18,7 @@ import Dashboard from './pages/Dashboard';
 import InvestmentRegistration from './pages/InvestmentRegistration';
 import 'moment/locale/pt-br';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import FullScreenLoader from './components/FullScreenLoader';
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,7 @@ root.render(
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="pt-br">
         <ApolloProvider client={client}>
           <GlobalStyles />
+          <FullScreenLoader open={false} />
           <RouterProvider router={router} />
         </ApolloProvider>
       </LocalizationProvider>
