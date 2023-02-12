@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
-/* eslint-disable @typescript-eslint/array-type */
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -627,6 +625,7 @@ export type EntryFiltersInput = {
   value?: Maybe<FloatFilterInput>;
   investment?: Maybe<InvestmentFiltersInput>;
   users_permissions_user?: Maybe<UsersPermissionsUserFiltersInput>;
+  transfer?: Maybe<BooleanFilterInput>;
   createdAt?: Maybe<DateTimeFilterInput>;
   updatedAt?: Maybe<DateTimeFilterInput>;
   publishedAt?: Maybe<DateTimeFilterInput>;
@@ -640,6 +639,7 @@ export type EntryInput = {
   value?: Maybe<Scalars['Float']>;
   investment?: Maybe<Scalars['ID']>;
   users_permissions_user?: Maybe<Scalars['ID']>;
+  transfer?: Maybe<Scalars['Boolean']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -649,6 +649,7 @@ export type Entry = {
   value: Scalars['Float'];
   investment?: Maybe<InvestmentEntityResponse>;
   users_permissions_user?: Maybe<UsersPermissionsUserEntityResponse>;
+  transfer?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
@@ -812,7 +813,7 @@ export type Query = {
   entry?: Maybe<EntryEntityResponse>;
   entries?: Maybe<EntryEntityResponseCollection>;
   investment?: Maybe<InvestmentEntityResponse>;
-  investments: Maybe<InvestmentEntityResponseCollection>;
+  investments?: Maybe<InvestmentEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
 };
 

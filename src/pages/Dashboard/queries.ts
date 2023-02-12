@@ -37,6 +37,7 @@ export const QUERY_GET_ALL_ENTRIES = gql`
         attributes {
           period
           value
+          transfer
           investment {
             data {
               attributes {

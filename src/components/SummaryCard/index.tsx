@@ -10,6 +10,7 @@ type SummaryCardProps = {
   mainValue: string | 0;
   variation: string;
   elapsedTime: string;
+  moneyVariation: string | 0;
 };
 
 const SummaryCard = ({
@@ -19,6 +20,7 @@ const SummaryCard = ({
   mainValue,
   variation,
   elapsedTime,
+  moneyVariation,
 }: SummaryCardProps) => (
   <CardWrapper>
     <S.Wrapper data-testid="summary-card">
@@ -36,6 +38,9 @@ const SummaryCard = ({
           {variation}
         </S.VariationValue>
         <S.VariationTime>{elapsedTime}</S.VariationTime>
+        <S.MoneyVariation negativeVariation={negativeVariation}>
+          {moneyVariation}
+        </S.MoneyVariation>
       </S.Variation>
     </S.Wrapper>
   </CardWrapper>

@@ -60,3 +60,12 @@ export const VariationValue = styled.div<VariationValueProps>`
   `};
 `;
 export const VariationTime = styled.div``;
+
+export const MoneyVariation = styled.div<VariationValueProps>`
+  ${({ theme, negativeVariation }) => css`
+    color: ${!negativeVariation ? theme.colors.green100 : theme.colors.red100};
+    font-size: 1.4rem;
+    flex: 1;
+    text-align: right;
+  `}
+`;

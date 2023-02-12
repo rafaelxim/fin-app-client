@@ -67,8 +67,6 @@ export const data = [
 ];
 
 const formatter = (tick: any) => {
-  console.log('-- aqwu--');
-  console.log({ tick: typeof tick });
   if (tick !== -Infinity) {
     return toReal(tick);
   }

@@ -33,25 +33,50 @@ const Dashboard = () => {
     })();
   };
 
+  /**
+   * Filtra as entries por categoria ou investimentos
+   * @param toSubtract se 1, pega entries do mês anterior
+   */
   const filterByMonthSubstraction = (
     toSubtract: number = 0,
     category?: string,
-    investment?: string
+    investment?: string,
+    excludeTransfers: boolean = false
   ) => {
     return monthBalances?.filter((entry) => {
       if (category) {
-        return (
-          entry?.attributes?.period ===
-            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry?.attributes?.investment?.data?.attributes?.category?.data
-            ?.attributes?.name === category
-        );
+        if (excludeTransfers) {
+          return (
+            entry?.attributes?.period ===
+              moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
+            entry?.attributes?.investment?.data?.attributes?.category?.data
+              ?.attributes?.name === category &&
+            entry.attributes?.transfer !== true
+          );
+        } else {
+          return (
+            entry?.attributes?.period ===
+              moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
+            entry?.attributes?.investment?.data?.attributes?.category?.data
+              ?.attributes?.name === category
+          );
+        }
       } else if (investment) {
-        return (
-          entry?.attributes?.period ===
-            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry?.attributes?.investment?.data?.attributes?.name === investment
-        );
+        if (excludeTransfers) {
+          return (
+            entry?.attributes?.period ===
+              moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
+            entry?.attributes?.investment?.data?.attributes?.name ===
+              investment &&
+            entry.attributes?.transfer !== true
+          );
+        } else {
+          return (
+            entry?.attributes?.period ===
+              moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
+            entry?.attributes?.investment?.data?.attributes?.name === investment
+          );
+        }
       } else {
         return (
           entry.attributes?.period ===
@@ -78,7 +103,6 @@ const Dashboard = () => {
       let pastEntries = filterByMonthSubstraction(1);
       if (currentEntries?.length === 0) {
         currentEntries = filterByMonthSubstraction(1);
-        console.log({ currentEntries });
         pastEntries = filterByMonthSubstraction(2);
       }
 
@@ -88,37 +112,60 @@ const Dashboard = () => {
 
       const variation = (currentPatrimonyValue / pastPatrimonyValue - 1) * 100;
 
+      const moneyVariation = currentPatrimonyValue - pastPatrimonyValue;
+
       const formattedVariation = variation.toFixed(2);
 
       return {
         currentPatrimonyValue,
         variation,
         formattedVariation,
+        moneyVariation,
       };
     } else {
       return {
         currentPatrimonyValue: 0,
         variation: 0,
         formattedVariation: ' ',
+        moneyVariation: 0,
       };
     }
   };
 
-  const getTotalPatrimonyByCategory = (category: string) => {
+  const getSummaryByCategory = (category: string) => {
     if (monthBalances?.length) {
       let currentEntries = filterByMonthSubstraction(0, category);
+      let currentEntriesNoTransfers = filterByMonthSubstraction(
+        0,
+        category,
+        '',
+        true
+      );
       let pastEntries = filterByMonthSubstraction(1, category);
       if (currentEntries?.length === 0) {
         currentEntries = filterByMonthSubstraction(1, category);
-        console.log({ currentEntries });
+        currentEntriesNoTransfers = filterByMonthSubstraction(
+          1,
+          category,
+          '',
+          true
+        );
         pastEntries = filterByMonthSubstraction(2, category);
       }
 
       const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
 
+      const currentPatrimonyValueNoTransfers = getMonthTotalValue(
+        currentEntriesNoTransfers!
+      );
+
       const pastPatrimonyValue = getMonthTotalValue(pastEntries!);
 
-      const variation = (currentPatrimonyValue / pastPatrimonyValue - 1) * 100;
+      const variation =
+        (currentPatrimonyValueNoTransfers / pastPatrimonyValue - 1) * 100;
+
+      const moneyVariation =
+        currentPatrimonyValueNoTransfers - pastPatrimonyValue;
 
       const formattedVariation = variation.toFixed(2);
 
@@ -126,12 +173,67 @@ const Dashboard = () => {
         currentPatrimonyValue,
         variation,
         formattedVariation,
+        moneyVariation,
       };
     } else {
       return {
         currentPatrimonyValue: 0,
         variation: 0,
         formattedVariation: ' ',
+        moneyVariation: 0,
+      };
+    }
+  };
+
+  const getSummaryByInvestment = (investment: string) => {
+    if (monthBalances?.length) {
+      let currentEntries = filterByMonthSubstraction(0, undefined, investment);
+      let currentEntriesNoTransfers = filterByMonthSubstraction(
+        0,
+        undefined,
+        investment,
+        true
+      );
+      let pastEntries = filterByMonthSubstraction(1, undefined, investment);
+      if (currentEntries?.length === 0) {
+        currentEntries = filterByMonthSubstraction(1, undefined, investment);
+        currentEntriesNoTransfers = filterByMonthSubstraction(
+          1,
+          undefined,
+          investment,
+          true
+        );
+        pastEntries = filterByMonthSubstraction(2, undefined, investment);
+      }
+
+      const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
+
+      const currentPatrimonyValueNoTransfers = getMonthTotalValue(
+        currentEntriesNoTransfers!
+      );
+
+      const pastPatrimonyValue = getMonthTotalValue(pastEntries!);
+
+      const variation =
+        (currentPatrimonyValueNoTransfers / pastPatrimonyValue - 1) * 100;
+
+      const moneyVariation =
+        currentPatrimonyValueNoTransfers - pastPatrimonyValue;
+
+      const formattedVariation = variation.toFixed(2);
+
+      return {
+        currentPatrimonyValue,
+        variation,
+        formattedVariation,
+        moneyVariation,
+      };
+    } else {
+      return {
+        currentPatrimonyValue: 0,
+        variation: 0,
+        formattedVariation: ' ',
+        moneyVariation: 0,
       };
     }
   };
@@ -151,8 +253,6 @@ const Dashboard = () => {
       }
     }
 
-    console.log(patrimonyByMonth);
-
     return patrimonyByMonth.reverse();
   };
 
@@ -171,37 +271,43 @@ const Dashboard = () => {
       }
     }
 
-    console.log(patrimonyByMonth);
-
     return patrimonyByMonth.reverse();
   };
 
-  const { variation, currentPatrimonyValue, formattedVariation } =
-    getTotalPatrimony();
+  const {
+    moneyVariation,
+    variation,
+    currentPatrimonyValue,
+    formattedVariation,
+  } = getTotalPatrimony();
 
   const {
     variation: variationRendaFixa,
+    moneyVariation: moneyVariationRendaFixa,
     currentPatrimonyValue: currentPatrimonyValueRendaFixa,
     formattedVariation: formattedVariationRendaFixa,
-  } = getTotalPatrimonyByCategory('Renda Fixa');
+  } = getSummaryByCategory('Renda Fixa');
 
   const {
     variation: variationTD,
+    moneyVariation: moneyVariationTD,
     currentPatrimonyValue: currentPatrimonyValueTD,
     formattedVariation: formattedVariationTD,
-  } = getTotalPatrimonyByCategory('Tesouro Direto');
+  } = getSummaryByCategory('Tesouro Direto');
 
   const {
-    variation: variationCarteiras,
-    currentPatrimonyValue: currentPatrimonyValueCarteiras,
-    formattedVariation: formattedVariationCarteiras,
-  } = getTotalPatrimonyByCategory('Carteiras');
+    variation: variationFGTS,
+    moneyVariation: moneyVariationFGTS,
+    currentPatrimonyValue: currentPatrimonyValueFGTS,
+    formattedVariation: formattedVariationFGTS,
+  } = getSummaryByInvestment('FGTS');
 
   const {
     variation: variationCripto,
+    moneyVariation: moneyVariationCripto,
     currentPatrimonyValue: currentPatrimonyValueCripto,
     formattedVariation: formattedVariationCripto,
-  } = getTotalPatrimonyByCategory('Crypto');
+  } = getSummaryByCategory('Crypto');
 
   return (
     <S.Wrapper>
@@ -220,6 +326,7 @@ const Dashboard = () => {
             variation={formattedVariation + '%'}
             negativeVariation={variation < 0}
             icon={<Wallet color="primary" />}
+            moneyVariation={toReal(moneyVariation)}
           />
           <SummaryCard
             title="Renda Fixa"
@@ -228,6 +335,7 @@ const Dashboard = () => {
             variation={formattedVariationRendaFixa + '%'}
             negativeVariation={variationRendaFixa < 0}
             icon={<Wallet color="primary" />}
+            moneyVariation={toReal(moneyVariationRendaFixa)}
           />
           <SummaryCard
             title="Tesouro Direto"
@@ -236,17 +344,19 @@ const Dashboard = () => {
             variation={formattedVariationTD + '%'}
             negativeVariation={variationTD < 0}
             icon={<Wallet color="primary" />}
+            moneyVariation={toReal(moneyVariationTD)}
           />
         </S.SummaryCardsContainer>
 
         <S.SummaryCardsContainer>
           <SummaryCard
-            title="Contas Correntes + FGTS"
+            title="FGTS"
             elapsedTime="do último mês"
-            mainValue={toReal(currentPatrimonyValueCarteiras)}
-            variation={formattedVariationCarteiras + '%'}
-            negativeVariation={variationCarteiras < 0}
+            mainValue={toReal(currentPatrimonyValueFGTS)}
+            variation={formattedVariationFGTS + '%'}
+            negativeVariation={variationFGTS < 0}
             icon={<Wallet color="primary" />}
+            moneyVariation={toReal(moneyVariationFGTS)}
           />
 
           <SummaryCard
@@ -256,6 +366,7 @@ const Dashboard = () => {
             variation={formattedVariationCripto + '%'}
             negativeVariation={variationCripto < 0}
             icon={<Wallet color="primary" />}
+            moneyVariation={toReal(moneyVariationCripto)}
           />
           {/* Todo: Pensar num novo summary card */}
           <SummaryCard
@@ -265,6 +376,7 @@ const Dashboard = () => {
             variation={formattedVariationCripto + '%'}
             negativeVariation={variationCripto < 0}
             icon={<Wallet color="primary" />}
+            moneyVariation={toReal(moneyVariationCripto)}
           />
         </S.SummaryCardsContainer>
 
