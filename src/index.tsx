@@ -22,6 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import FullScreenLoader from './features/FullScreenLoader';
 import { store } from './app/store';
 import { SnackbarProvider } from 'notistack';
+import TransferRegistration from './pages/TransferRegistration';
 
 const router = createBrowserRouter([
   {
@@ -33,8 +34,8 @@ const router = createBrowserRouter([
     element: <InvestmentRegistration />,
   },
   {
-    path: 'about',
-    element: <div>About</div>,
+    path: '/registro-de-transferencia',
+    element: <TransferRegistration />,
   },
 ]);
 

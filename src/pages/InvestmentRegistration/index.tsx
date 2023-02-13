@@ -94,7 +94,6 @@ const InvestmentRegistration = () => {
   };
 
   const handleStepChange = (n: number) => {
-    console.log('----- called ----');
     const categories = formatInvestmentsByCategory();
     console.log({ categories });
     if (categories) {

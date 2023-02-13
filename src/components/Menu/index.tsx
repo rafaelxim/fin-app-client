@@ -15,6 +15,10 @@ const Menu = () => {
           click={() => navigate('/registro-de-investimentos')}
           menu="Registrar Investimentos"
         />
+        <MenuItem
+          click={() => navigate('/registro-de-transferencia')}
+          menu="Registrar Transferência"
+        />
       </S.MenuList>
     </S.Wrapper>
   );

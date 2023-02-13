@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import city from '../../assets/futuristic-city.jpg';
-// import { Wrapper as CardWrapper } from '../../components/CardWrapper/styles';
 
 export const Wrapper = styled.div`
   /* min-height: 100vh; */

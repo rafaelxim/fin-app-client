@@ -96,6 +96,7 @@ export const CREATE_ENTRY = gql`
     $value: Float
     $investment: ID
     $published: DateTime
+    $transfer: Boolean = false
   ) {
     createEntry(
       data: {
@@ -103,8 +104,45 @@ export const CREATE_ENTRY = gql`
         value: $value
         investment: $investment
         publishedAt: $published
+        transfer: $transfer
       }
     ) {
+      data {
+        id
+      }
+    }
+  }
+`;
+
+export const GET_ENTRY_BY_INVESTMENT_DATE = gql`
+  query GET_ENTRY_BY_INVESTMENT_DATE($period: Date, $investment: ID) {
+    entries(
+      filters: {
+        period: { eq: $period }
+        investment: { id: { eq: $investment } }
+      }
+    ) {
+      data {
+        id
+        attributes {
+          period
+          value
+          investment {
+            data {
+              attributes {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_ENTRY = gql`
+  mutation UPDATE_ENTRY($investment: ID!, $amount: Float) {
+    updateEntry(id: $investment, data: { value: $amount }) {
       data {
         id
       }
