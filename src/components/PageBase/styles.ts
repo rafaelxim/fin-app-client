@@ -1,9 +1,7 @@
 import styled, { css } from 'styled-components';
+import moneyBg from '../../assets/money-bg.jpg';
 
-export const Wrapper = styled.div`
-  /* min-height: 100vh; */
-  padding: 0 3rem 0 0;
-`;
+export const Wrapper = styled.div``;
 
 export const Grid = styled.div`
   display: grid;
@@ -12,6 +10,14 @@ export const Grid = styled.div`
   grid-template-rows: 5rem;
   grid-gap: 3rem 1.5rem;
   align-items: start;
+  padding: 0 3rem 0 0;
+
+  background-image: linear-gradient(
+      0deg,
+      rgba(0, 18, 72, 0.8),
+      rgba(4, 0, 32, 0.8)
+    ),
+    url(${moneyBg});
 `;
 
 export const MenuContainer = styled.div`

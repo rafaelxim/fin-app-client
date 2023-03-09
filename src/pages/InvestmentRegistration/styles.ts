@@ -6,16 +6,16 @@ export const FormContainer = styled.div`
     color: ${theme.colors.text.primary};
     padding: 5rem 10rem;
     background-color: ${theme.colors.background.paper};
-    /* border-radius: 2rem; */
+    border-radius: 1rem;
     display: grid;
     grid-gap: 3rem 5rem;
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 10rem;
+    opacity: 0.8;
   `}
 `;
 
 export const FormItem = styled.div`
-  /* background-color: aquamarine; */
   min-height: 2rem;
   width: 100%;
   display: flex;
