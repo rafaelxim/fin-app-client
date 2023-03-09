@@ -12,6 +12,10 @@ export const Wrapper = styled.div`
   `}
 `;
 
+export const Logo = styled.img`
+  width: 15rem;
+`;
+
 export const LogoWrapper = styled.div`
   ${({ theme }) => css`
     padding: 4rem 0;

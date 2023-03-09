@@ -80,7 +80,6 @@ const AreaChartCustom = ({ data, dataKeyX, dataKeyY }: ChartAreaProps) => {
     payload,
     label,
   }: TooltipProps<ValueType, NameType>) => {
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (active && payload && payload.length) {
       return (
         <S.CustomTooltip>

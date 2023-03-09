@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import CustomStepper, { CustomSteps } from '../../components/CustomStepper';
-import Menu from '../../components/Menu';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -30,6 +29,7 @@ import {
 } from '../../features/FullScreenLoader/loaderSlice';
 import { NumberFormatValues } from 'react-number-format';
 import { useSnackbar } from 'notistack';
+import PageBase from '../../components/PageBase';
 
 type InvestmentValues = {
   [key: string]: {
@@ -124,7 +124,6 @@ const InvestmentRegistration = () => {
   const sendData = async () => {
     setFinishModalOpen(false);
     dispatch(activate());
-    // eslint-disable-next-line @typescript-eslint/promise-function-async
     const promises = Object.keys(investmentValues!).map((i) => {
       return createEntry({
         variables: {
@@ -143,7 +142,7 @@ const InvestmentRegistration = () => {
   };
 
   return (
-    <S.Wrapper>
+    <PageBase title="Registrar investimentos">
       <Dialog
         open={finishModalOpen}
         onClose={handleCloseFinishModal}
@@ -173,41 +172,32 @@ const InvestmentRegistration = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <S.Grid>
-        <S.HeaderContainer>
-          <S.PageTitle>Registro de Investimentos</S.PageTitle>
-        </S.HeaderContainer>
-        <S.MenuContainer>
-          <Menu />
-        </S.MenuContainer>
-        <S.PageContent>
-          <CustomStepper
-            onFinish={() => setFinishModalOpen(true)}
-            onChangeStep={(n: number) => handleStepChange(n)}
-            steps={formatInvestmentsByCategory()}
-          />
-          <S.FormContainer>
-            {currentCategory?.investments.map((i) => {
-              return (
-                <S.FormItem key={i.id}>
-                  <CurrencyField
-                    label={i.attributes?.name}
-                    variant="outlined"
-                    fullWidth
-                    onValueChange={(v) => handleChangeInvestment(v, i.id!)}
-                    value={
-                      investmentValues && investmentValues[i.id!]
-                        ? investmentValues[i.id!].value
-                        : 0
-                    }
-                  />
-                </S.FormItem>
-              );
-            })}
-          </S.FormContainer>
-        </S.PageContent>
-      </S.Grid>
-    </S.Wrapper>
+
+      <CustomStepper
+        onFinish={() => setFinishModalOpen(true)}
+        onChangeStep={(n: number) => handleStepChange(n)}
+        steps={formatInvestmentsByCategory()}
+      />
+      <S.FormContainer>
+        {currentCategory?.investments.map((i) => {
+          return (
+            <S.FormItem key={i.id}>
+              <CurrencyField
+                label={i.attributes?.name}
+                variant="outlined"
+                fullWidth
+                onValueChange={(v) => handleChangeInvestment(v, i.id!)}
+                value={
+                  investmentValues && investmentValues[i.id!]
+                    ? investmentValues[i.id!].value
+                    : 0
+                }
+              />
+            </S.FormItem>
+          );
+        })}
+      </S.FormContainer>
+    </PageBase>
   );
 };
 

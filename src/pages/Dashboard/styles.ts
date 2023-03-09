@@ -1,13 +1,11 @@
 import styled, { css } from 'styled-components';
 import city from '../../assets/futuristic-city.jpg';
 
-export const Wrapper = styled.div`
-  /* min-height: 100vh; */
-  padding: 0 3rem 0 0;
-`;
+export const Wrapper = styled.div``;
 
 export const Grid = styled.div`
   ${({ theme }) => css`
+    padding: 0 3rem 0 0;
     display: grid;
     min-height: 100vh;
     grid-template-columns: repeat(12, 1fr);
@@ -19,8 +17,8 @@ export const Grid = styled.div`
     background-size: cover;
     background-image: linear-gradient(
         0deg,
-        rgb(50, 68, 127, 0.8),
-        rgb(50, 68, 127, 0.8)
+        rgba(32, 34, 40, 0.8),
+        rgba(0, 0, 0, 0.8)
       ),
       url(${city});
   `}
@@ -36,11 +34,12 @@ export const SummaryCardsContainer = styled.div`
   grid-column: 3 / -1;
   display: flex;
   gap: 3rem;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  /* justify-content: space-between; */
 
   > div {
     flex: 1;
-    max-width: 40rem;
+    max-width: 37rem;
   }
 `;
 
@@ -64,6 +63,12 @@ export const PageTitle = styled.div`
   ${({ theme }) => css`
     color: ${theme.colors.text.primary};
     font-weight: bold;
-    font-size: 1.8rem;
+    font-size: 2rem;
   `}
+`;
+
+export const PiesContainer = styled.div`
+  grid-column: 3 / -1;
+  display: flex;
+  gap: 0 3rem;
 `;

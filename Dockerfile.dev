@@ -1,0 +1,10 @@
+FROM node:16
+
+WORKDIR /my-app
+
+COPY yarn.lock .
+COPY package.json .
+
+RUN yarn install
+
+CMD ["yarn", "start2"]

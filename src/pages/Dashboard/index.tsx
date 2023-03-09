@@ -4,6 +4,7 @@ import * as S from './styles';
 import Menu from '../../components/Menu';
 import SummaryCard from '../../components/SummaryCard';
 import Wallet from '../../assets/Icons/Wallet';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import GraphicCard from '../../components/GraphicCard';
 import { useLazyQuery } from '@apollo/client';
 import { EntryEntity, Query } from '../../types/dbTypes';
@@ -14,6 +15,7 @@ import {
   activate,
   deactivate,
 } from '../../features/FullScreenLoader/loaderSlice';
+import PieGraph from '../../components/PieGraph';
 
 const Dashboard = () => {
   const [monthBalances, setMonthBalances] = useState<EntryEntity[]>();
@@ -303,11 +305,78 @@ const Dashboard = () => {
   } = getSummaryByInvestment('FGTS');
 
   const {
+    variation: variationNubank,
+    moneyVariation: moneyVariationNubank,
+    currentPatrimonyValue: currentPatrimonyValueNubank,
+    formattedVariation: formattedVariationNubank,
+  } = getSummaryByInvestment('CONTA NUBANK');
+
+  const {
+    variation: variationItau,
+    moneyVariation: moneyVariationItau,
+    currentPatrimonyValue: currentPatrimonyValueItau,
+    formattedVariation: formattedVariationItau,
+  } = getSummaryByInvestment('CONTA ITAU');
+
+  const {
+    variation: variationSantander,
+    moneyVariation: moneyVariationSantander,
+    currentPatrimonyValue: currentPatrimonyValueSantander,
+    formattedVariation: formattedVariationSantander,
+  } = getSummaryByInvestment('CONTA SANTANDER');
+
+  const {
     variation: variationCripto,
     moneyVariation: moneyVariationCripto,
     currentPatrimonyValue: currentPatrimonyValueCripto,
     formattedVariation: formattedVariationCripto,
   } = getSummaryByCategory('Crypto');
+
+  const { currentPatrimonyValue: currentPatrimonyValueCareiras } =
+    getSummaryByCategory('Carteiras');
+
+  const formatedPieData = [
+    {
+      name: 'Carteiras',
+      value: currentPatrimonyValueCareiras - currentPatrimonyValueFGTS,
+      color: '#D2DCF2',
+    },
+    {
+      name: 'FGTS',
+      value: currentPatrimonyValueFGTS,
+      color: '#A6A280',
+    },
+    {
+      name: 'Crypto',
+      value: currentPatrimonyValueCripto,
+      color: '#F2DBC7',
+    },
+    {
+      name: 'Tesouro Direto',
+      value: currentPatrimonyValueTD,
+      color: '#F2EEC7',
+    },
+    {
+      name: 'Renda Fixa',
+      value: currentPatrimonyValueRendaFixa,
+      color: '#A69180',
+    },
+  ];
+
+  const formatedPieAlocationData = [
+    {
+      name: 'Não alocado',
+      value: currentPatrimonyValueCareiras - currentPatrimonyValueFGTS,
+      color: '#A69180',
+    },
+    {
+      name: 'Alocado',
+      value:
+        currentPatrimonyValue -
+        (currentPatrimonyValueCareiras - currentPatrimonyValueFGTS),
+      color: '#D2DCF2',
+    },
+  ];
 
   return (
     <S.Wrapper>
@@ -325,16 +394,17 @@ const Dashboard = () => {
             mainValue={toReal(currentPatrimonyValue)}
             variation={formattedVariation + '%'}
             negativeVariation={variation < 0}
-            icon={<Wallet color="primary" />}
+            icon={<AccountBalanceWalletIcon />}
             moneyVariation={toReal(moneyVariation)}
           />
+
           <SummaryCard
             title="Renda Fixa"
             elapsedTime="do último mês"
             mainValue={toReal(currentPatrimonyValueRendaFixa)}
             variation={formattedVariationRendaFixa + '%'}
             negativeVariation={variationRendaFixa < 0}
-            icon={<Wallet color="primary" />}
+            icon={<AccountBalanceWalletIcon />}
             moneyVariation={toReal(moneyVariationRendaFixa)}
           />
           <SummaryCard
@@ -343,40 +413,57 @@ const Dashboard = () => {
             mainValue={toReal(currentPatrimonyValueTD)}
             variation={formattedVariationTD + '%'}
             negativeVariation={variationTD < 0}
-            icon={<Wallet color="primary" />}
+            icon={<AccountBalanceWalletIcon />}
             moneyVariation={toReal(moneyVariationTD)}
           />
-        </S.SummaryCardsContainer>
-
-        <S.SummaryCardsContainer>
           <SummaryCard
             title="FGTS"
             elapsedTime="do último mês"
             mainValue={toReal(currentPatrimonyValueFGTS)}
             variation={formattedVariationFGTS + '%'}
             negativeVariation={variationFGTS < 0}
-            icon={<Wallet color="primary" />}
+            icon={<AccountBalanceWalletIcon />}
             moneyVariation={toReal(moneyVariationFGTS)}
+          />
+        </S.SummaryCardsContainer>
+
+        <S.SummaryCardsContainer>
+          <SummaryCard
+            title="Cripto"
+            elapsedTime="do último mês"
+            mainValue={toReal(currentPatrimonyValueCripto)}
+            variation={formattedVariationCripto + '%'}
+            negativeVariation={variationCripto < 0}
+            icon={<AccountBalanceWalletIcon />}
+            moneyVariation={toReal(moneyVariationCripto)}
+          />
+          <SummaryCard
+            title="Conta Itaú"
+            elapsedTime="do último mês"
+            mainValue={toReal(currentPatrimonyValueItau)}
+            variation={formattedVariationItau + '%'}
+            negativeVariation={variationItau < 0}
+            icon={<AccountBalanceWalletIcon />}
+            moneyVariation={toReal(moneyVariationItau)}
+          />
+          <SummaryCard
+            title="Conta Nubank"
+            elapsedTime="do último mês"
+            mainValue={toReal(currentPatrimonyValueNubank)}
+            variation={formattedVariationNubank + '%'}
+            negativeVariation={variationNubank < 0}
+            icon={<AccountBalanceWalletIcon />}
+            moneyVariation={toReal(moneyVariationNubank)}
           />
 
           <SummaryCard
-            title="Cripto"
+            title="Conta Santander"
             elapsedTime="do último mês"
-            mainValue={toReal(currentPatrimonyValueCripto)}
-            variation={formattedVariationCripto + '%'}
-            negativeVariation={variationCripto < 0}
-            icon={<Wallet color="primary" />}
-            moneyVariation={toReal(moneyVariationCripto)}
-          />
-          {/* Todo: Pensar num novo summary card */}
-          <SummaryCard
-            title="Cripto"
-            elapsedTime="do último mês"
-            mainValue={toReal(currentPatrimonyValueCripto)}
-            variation={formattedVariationCripto + '%'}
-            negativeVariation={variationCripto < 0}
-            icon={<Wallet color="primary" />}
-            moneyVariation={toReal(moneyVariationCripto)}
+            mainValue={toReal(currentPatrimonyValueSantander)}
+            variation={formattedVariationSantander + '%'}
+            negativeVariation={variationSantander < 0}
+            icon={<AccountBalanceWalletIcon />}
+            moneyVariation={toReal(moneyVariationSantander)}
           />
         </S.SummaryCardsContainer>
 
@@ -397,6 +484,18 @@ const Dashboard = () => {
 
           {/* <GraphicCard /> */}
         </S.GraphicCardContainer>
+        <S.PiesContainer>
+          <PieGraph
+            title="Distribuição"
+            subtitle="Como a grana ta distribuida?"
+            data={formatedPieData}
+          />
+          <PieGraph
+            title="Alocação"
+            subtitle="O que tá e o que não tá investido!? "
+            data={formatedPieAlocationData}
+          />
+        </S.PiesContainer>
       </S.Grid>
     </S.Wrapper>
   );

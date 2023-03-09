@@ -8,3 +8,7 @@ export const toReal = (val: number) => {
   }
   return 0;
 };
+
+export const realToFloat = (val: string) => {
+  return parseFloat(val.replace('R$ ', '').replace('.', '').replace(',', '.'));
+};

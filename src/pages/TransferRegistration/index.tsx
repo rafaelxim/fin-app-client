@@ -3,7 +3,6 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useAppDispatch } from '../../app/hooks';
 import CardWrapper from '../../components/CardWrapper';
-import Menu from '../../components/Menu';
 import TextField from '../../components/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import {
@@ -23,6 +22,7 @@ import moment, { Moment } from 'moment';
 import CurrencyField from '../../components/CurrencyField';
 import Button from '@mui/material/Button';
 import { useSnackbar } from 'notistack';
+import PageBase from '../../components/PageBase';
 
 type AutoCompleteOptions = {
   id?: Maybe<string> | undefined;
@@ -133,89 +133,79 @@ const TransferRegistration = () => {
   console.log({ originAccount, destinationAccount });
 
   return (
-    <S.Wrapper>
-      <S.Grid>
-        <S.HeaderContainer>
-          <S.PageTitle>Registro de Transferência</S.PageTitle>
-        </S.HeaderContainer>
-        <S.MenuContainer>
-          <Menu />
-        </S.MenuContainer>
-        <S.PageContent>
-          <CardWrapper>
-            <S.CardContent>
-              <S.FormLine>
-                <Autocomplete
-                  fullWidth
-                  disablePortal
-                  options={investments ?? []}
-                  renderInput={(params: any) => (
-                    <TextField
-                      error={errorStatus?.originAccount}
-                      {...params}
-                      label="Conta de Origem"
-                    />
-                  )}
-                  onChange={(o, newValue) => {
-                    setOriginAccount(newValue);
-                    setErrorStatus({ ...errorStatus, originAccount: false });
-                  }}
+    <PageBase title="Registrar transferência">
+      <CardWrapper fullWidth>
+        <S.CardContent>
+          <S.FormLine>
+            <Autocomplete
+              fullWidth
+              disablePortal
+              options={investments ?? []}
+              renderInput={(params: any) => (
+                <TextField
+                  error={errorStatus?.originAccount}
+                  {...params}
+                  label="Conta de Origem"
                 />
-                <Autocomplete
-                  fullWidth
-                  disablePortal
-                  options={investments ?? []}
-                  renderInput={(params: any) => (
-                    <TextField
-                      error={errorStatus?.destinationAccount}
-                      {...params}
-                      label="Conta de Destino"
-                    />
-                  )}
-                  onChange={(o, newValue) => {
-                    setDestinationAccount(newValue);
-                    setErrorStatus({
-                      ...errorStatus,
-                      destinationAccount: false,
-                    });
-                  }}
+              )}
+              onChange={(o, newValue) => {
+                setOriginAccount(newValue);
+                setErrorStatus({ ...errorStatus, originAccount: false });
+              }}
+            />
+            <Autocomplete
+              fullWidth
+              disablePortal
+              options={investments ?? []}
+              renderInput={(params: any) => (
+                <TextField
+                  error={errorStatus?.destinationAccount}
+                  {...params}
+                  label="Conta de Destino"
                 />
-              </S.FormLine>
-              <S.FormLine>
-                <DesktopDatePicker
-                  views={['year', 'month']}
-                  label="Data"
-                  minDate={moment('2022-03-01')}
-                  maxDate={moment('2026-12-01')}
-                  value={dateValue}
-                  onChange={(newValue) => {
-                    setDateValue(newValue);
-                  }}
-                  renderInput={(params) => <TextField fullWidth {...params} />}
-                />
+              )}
+              onChange={(o, newValue) => {
+                setDestinationAccount(newValue);
+                setErrorStatus({
+                  ...errorStatus,
+                  destinationAccount: false,
+                });
+              }}
+            />
+          </S.FormLine>
+          <S.FormLine>
+            <DesktopDatePicker
+              views={['year', 'month']}
+              label="Data"
+              minDate={moment('2022-03-01')}
+              maxDate={moment('2026-12-01')}
+              value={dateValue}
+              onChange={(newValue) => {
+                setDateValue(newValue);
+              }}
+              renderInput={(params) => <TextField fullWidth {...params} />}
+            />
 
-                <CurrencyField
-                  label="Valor a ser transferido"
-                  variant="outlined"
-                  fullWidth
-                  onValueChange={(v) => setTransferValue(v.floatValue ?? 0)}
-                  value={transferValue}
-                />
-              </S.FormLine>
-              <S.FormAction>
-                <Button
-                  onClick={validateAndSend}
-                  variant="contained"
-                  endIcon={<SendIcon />}
-                >
-                  Registrar
-                </Button>
-              </S.FormAction>
-            </S.CardContent>
-          </CardWrapper>
-        </S.PageContent>
-      </S.Grid>
-    </S.Wrapper>
+            <CurrencyField
+              label="Valor a ser transferido"
+              variant="outlined"
+              fullWidth
+              onValueChange={(v) => setTransferValue(v.floatValue ?? 0)}
+              value={transferValue}
+            />
+          </S.FormLine>
+          <S.FormAction>
+            <Button
+              onClick={validateAndSend}
+              variant="contained"
+              endIcon={<SendIcon />}
+            >
+              Registrar
+            </Button>
+          </S.FormAction>
+        </S.CardContent>
+      </CardWrapper>
+    </PageBase>
   );
 };
 

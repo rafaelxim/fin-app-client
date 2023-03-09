@@ -28,6 +28,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "6.4.1",
     "react-scripts": "5.0.1",
+    "read-excel-file": "^5.6.0",
     "recharts": "^2.1.15",
     "styled-components": "^5.3.6",
     "typescript": "*",
@@ -35,6 +36,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start2": "WATCHPACK_POLLING=true react-scripts start",
     "build": "react-scripts build",
     "test": "yarn testWithCoverage --coverage --watchAll",
     "testWithCoverage": "react-scripts test",

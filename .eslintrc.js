@@ -4,12 +4,6 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'standard-with-typescript',
-    'plugin:storybook/recommended',
-  ],
-  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -30,5 +24,6 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/indent': 'off',
     'multiline-ternary': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
   },
 };

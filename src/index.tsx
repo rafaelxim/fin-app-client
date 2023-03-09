@@ -23,6 +23,7 @@ import FullScreenLoader from './features/FullScreenLoader';
 import { store } from './app/store';
 import { SnackbarProvider } from 'notistack';
 import TransferRegistration from './pages/TransferRegistration';
+import DividendsInsertion from './pages/DividendsInsertion';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: '/registro-de-transferencia',
     element: <TransferRegistration />,
+  },
+  {
+    path: '/insercao-dividendos',
+    element: <DividendsInsertion />,
   },
 ]);
 
