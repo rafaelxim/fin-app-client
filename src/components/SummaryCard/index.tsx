@@ -24,9 +24,9 @@ const SummaryCard = ({
 }: SummaryCardProps) => (
   <CardWrapper>
     <S.Wrapper data-testid="summary-card">
-      <S.IconWrapper>
+      {/* <S.IconWrapper>
         <S.Icon>{icon}</S.Icon>
-      </S.IconWrapper>
+      </S.IconWrapper> */}
       <S.CardTitle>{title}</S.CardTitle>
       <S.CardValue>{mainValue}</S.CardValue>
       <Divider />

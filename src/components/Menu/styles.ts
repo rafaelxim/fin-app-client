@@ -2,9 +2,14 @@ import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   ${({ theme }) => css`
-    background-color: ${theme.colors.background.paper};
+    background: linear-gradient(
+      ${theme.colors.blue},
+      ${theme.colors.background.default}
+    );
     /* border-radius: 1.3rem; */
     padding: 0 3rem;
+    margin: 2rem 0 0 2rem;
+    border-radius: 1rem;
 
     display: flex;
     flex-direction: column;

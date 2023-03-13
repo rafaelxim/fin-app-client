@@ -104,8 +104,8 @@ const AreaChartCustom = ({ data, dataKeyX, dataKeyY }: ChartAreaProps) => {
           bottom: 0,
         }}
       >
-        <XAxis stroke="#f2f2f2" dataKey={dataKeyX} />
-        <YAxis tickFormatter={formatter} stroke="#f2f2f2" />
+        <XAxis stroke="#5bcafb" dataKey={dataKeyX} />
+        <YAxis tickFormatter={formatter} stroke="#5bcafb" />
         <Tooltip
           wrapperStyle={{ outline: 'none' }}
           content={<CustomTooltip />}
@@ -113,8 +113,8 @@ const AreaChartCustom = ({ data, dataKeyX, dataKeyY }: ChartAreaProps) => {
         <Line
           type="monotone"
           dataKey={dataKeyY}
-          stroke="#f2f2f2"
-          fill="#f2f2f2"
+          stroke="#5bcafb"
+          fill="#5bcafb"
         />
       </LineChart>
     </ResponsiveContainer>

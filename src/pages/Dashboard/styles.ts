@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import city from '../../assets/futuristic-city.jpg';
 
 export const Wrapper = styled.div``;
 
@@ -12,15 +11,7 @@ export const Grid = styled.div`
     grid-template-rows: 5rem 15rem 15rem 35rem;
     grid-gap: 3rem 1.5rem;
     align-items: start;
-
-    background-position: center;
-    background-size: cover;
-    background-image: linear-gradient(
-        0deg,
-        rgba(32, 34, 40, 0.8),
-        rgba(0, 0, 0, 0.8)
-      ),
-      url(${city});
+    background-color: ${theme.colors.background.default};
   `}
 `;
 

@@ -11,7 +11,6 @@ export const FormContainer = styled.div`
     grid-gap: 3rem 5rem;
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 10rem;
-    opacity: 0.8;
   `}
 `;
 

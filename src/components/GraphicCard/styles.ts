@@ -11,9 +11,9 @@ export const Graphic = styled.div`
     height: 20rem;
     /* border-radius: 1rem; */
     background: linear-gradient(
-      112.32deg,
-      ${theme.colors.background.paper} 20.17%,
-      ${theme.colors.primary} 200.91%
+      ${theme.colors.lighterBlue} -20%,
+      ${theme.colors.blue} 30%,
+      ${theme.colors.background.paper}
     );
     position: relative;
     top: -4rem;

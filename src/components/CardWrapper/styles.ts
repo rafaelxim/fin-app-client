@@ -12,7 +12,6 @@ export const Wrapper = styled.div<WrapperProps>`
     color: ${theme.colors.text.primary};
     margin-top: ${topMargin ? '2rem' : '0'};
     flex: ${fullWidth ? '1' : 'unset'};
-    opacity: 0.8;
     /* box-shadow: 8px 8px 16px 4px #000000; */
     border-radius: 1rem;
   `}

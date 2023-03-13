@@ -6,7 +6,6 @@ export const StepperCard = styled.div`
     flex: 1;
     padding: 3rem 2rem;
     background-color: ${theme.colors.background.paper};
-    opacity: 0.8;
     border-radius: 1rem;
   `}
 `;

@@ -11,7 +11,7 @@ import {
   QUERY_GET_ALL_INVESTMENTS,
   QUERY_GET_ALL_CATEGORIES,
   CREATE_ENTRY,
-} from '../Dashboard/queries';
+} from '../../api/queries';
 import {
   CategoryEntityResponseCollection,
   InvestmentEntityResponseCollection,
@@ -24,8 +24,8 @@ import moment, { Moment } from 'moment';
 import TextField from '../../components/TextField';
 import { useAppDispatch } from '../../app/hooks';
 import {
-  activate,
-  deactivate,
+  activateLoader,
+  deactivateLoader,
 } from '../../features/FullScreenLoader/loaderSlice';
 import { NumberFormatValues } from 'react-number-format';
 import { useSnackbar } from 'notistack';
@@ -59,7 +59,7 @@ const InvestmentRegistration = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    dispatch(activate());
+    dispatch(activateLoader());
     executeQueries();
   }, []);
 
@@ -75,7 +75,7 @@ const InvestmentRegistration = () => {
       setInvestments(res.data?.investments);
       const resCat = await categoriesRequest();
       setCategories(resCat.data?.categories);
-      dispatch(deactivate());
+      dispatch(deactivateLoader());
     })();
   };
 
@@ -123,7 +123,7 @@ const InvestmentRegistration = () => {
 
   const sendData = async () => {
     setFinishModalOpen(false);
-    dispatch(activate());
+    dispatch(activateLoader());
     const promises = Object.keys(investmentValues!).map((i) => {
       return createEntry({
         variables: {
@@ -136,7 +136,7 @@ const InvestmentRegistration = () => {
     });
 
     await Promise.all(promises);
-    dispatch(deactivate());
+    dispatch(deactivateLoader());
     setInvestmentValues(undefined);
     enqueueSnackbar('Dados enviados com sucesso', { variant: 'success' });
   };

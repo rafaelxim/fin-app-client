@@ -6,8 +6,8 @@ import CardWrapper from '../../components/CardWrapper';
 import TextField from '../../components/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import {
-  activate,
-  deactivate,
+  activateLoader,
+  deactivateLoader,
 } from '../../features/FullScreenLoader/loaderSlice';
 import { Maybe, Query } from '../../types/dbTypes';
 import {
@@ -15,7 +15,7 @@ import {
   GET_ENTRY_BY_INVESTMENT_DATE,
   QUERY_GET_ALL_INVESTMENTS,
   UPDATE_ENTRY,
-} from '../Dashboard/queries';
+} from '../../api/queries';
 import * as S from './styles';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import moment, { Moment } from 'moment';
@@ -63,14 +63,14 @@ const TransferRegistration = () => {
 
   const executeQueries = () => {
     void (async () => {
-      dispatch(activate());
+      dispatch(activateLoader());
       const res = await investmentsRequest();
       const formatedInvestments = res.data?.investments?.data.map((i) => ({
         id: i.id,
         label: i.attributes?.name,
       }));
       setInvestments(formatedInvestments);
-      dispatch(deactivate());
+      dispatch(deactivateLoader());
     })();
   };
 
@@ -85,7 +85,7 @@ const TransferRegistration = () => {
     }
 
     try {
-      dispatch(activate());
+      dispatch(activateLoader());
       // Encontra id da conta de origem
       const res = await getEntryByInvestmentAndDate({
         variables: {
@@ -116,7 +116,7 @@ const TransferRegistration = () => {
             transfer: true,
           },
         });
-        dispatch(deactivate());
+        dispatch(deactivateLoader());
 
         enqueueSnackbar('Transferência realizada com sucesso', {
           variant: 'success',
@@ -126,7 +126,7 @@ const TransferRegistration = () => {
       enqueueSnackbar('Ocorreu um erro inesperado', {
         variant: 'error',
       });
-      dispatch(deactivate());
+      dispatch(deactivateLoader());
     }
   };
 

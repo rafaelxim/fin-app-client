@@ -4,20 +4,16 @@ import moneyBg from '../../assets/money-bg.jpg';
 export const Wrapper = styled.div``;
 
 export const Grid = styled.div`
-  display: grid;
-  min-height: 100vh;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 5rem;
-  grid-gap: 3rem 1.5rem;
-  align-items: start;
-  padding: 0 3rem 0 0;
-
-  background-image: linear-gradient(
-      0deg,
-      rgba(0, 18, 72, 0.8),
-      rgba(4, 0, 32, 0.8)
-    ),
-    url(${moneyBg});
+  ${({ theme }) => css`
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 5rem;
+    grid-gap: 3rem 1.5rem;
+    align-items: start;
+    padding: 0 3rem 0 0;
+    background-color: ${theme.colors.background.default};
+  `}
 `;
 
 export const MenuContainer = styled.div`

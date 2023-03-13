@@ -33,17 +33,7 @@ export const CardValue = styled.div`
   text-align: right;
   margin: 1.3rem 0;
 `;
-export const CardDivider = styled.div`
-  margin: 1.3rem 0;
-  height: 0.1rem;
 
-  background: linear-gradient(
-    270deg,
-    rgba(248, 248, 248, 0.0424) 0%,
-    rgba(255, 255, 255, 0.53) 49.55%,
-    rgba(248, 248, 248, 0.0424) 94.18%
-  );
-`;
 export const Variation = styled.div`
   display: flex;
   font-size: 1.4rem;
@@ -56,14 +46,18 @@ type VariationValueProps = {
 
 export const VariationValue = styled.div<VariationValueProps>`
   ${({ theme, negativeVariation }) => css`
-    color: ${!negativeVariation ? theme.colors.green100 : theme.colors.red100};
+    color: ${!negativeVariation
+      ? theme.colors.lighterBlue
+      : theme.colors.red100};
   `};
 `;
 export const VariationTime = styled.div``;
 
 export const MoneyVariation = styled.div<VariationValueProps>`
   ${({ theme, negativeVariation }) => css`
-    color: ${!negativeVariation ? theme.colors.green100 : theme.colors.red100};
+    color: ${!negativeVariation
+      ? theme.colors.lighterBlue
+      : theme.colors.red100};
     font-size: 1.4rem;
     flex: 1;
     text-align: right;

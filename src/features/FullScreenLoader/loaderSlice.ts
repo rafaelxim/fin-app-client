@@ -12,15 +12,15 @@ export const loaderSlice = createSlice({
   name: 'loader',
   initialState,
   reducers: {
-    activate: (state) => {
+    activateLoader: (state) => {
       state.loading = true;
     },
-    deactivate: (state) => {
+    deactivateLoader: (state) => {
       state.loading = false;
     },
   },
 });
 
-export const { activate, deactivate } = loaderSlice.actions;
+export const { activateLoader, deactivateLoader } = loaderSlice.actions;
 
 export default loaderSlice.reducer;
