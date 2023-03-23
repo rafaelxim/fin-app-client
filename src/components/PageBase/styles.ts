@@ -1,6 +1,10 @@
 import styled, { css } from 'styled-components';
 import moneyBg from '../../assets/money-bg.jpg';
 
+type PageContentProps = {
+  flexDirection?: 'column' | 'row';
+};
+
 export const Wrapper = styled.div``;
 
 export const Grid = styled.div`
@@ -37,8 +41,11 @@ export const PageTitle = styled.div`
   `}
 `;
 
-export const PageContent = styled.div`
-  grid-column: 3 / -1;
-  display: flex;
-  grid-gap: 3rem;
+export const PageContent = styled.div<PageContentProps>`
+  ${({ flexDirection }) => css`
+    grid-column: 3 / -1;
+    display: flex;
+    grid-gap: 3rem;
+    flex-direction: ${flexDirection};
+  `}
 `;

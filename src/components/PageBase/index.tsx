@@ -5,9 +5,10 @@ import * as S from './styles';
 type Props = {
   children: React.ReactNode;
   title: string;
+  flexDirection?: 'column' | 'row';
 };
 
-const PageBase = ({ children, title }: Props) => (
+const PageBase = ({ children, title, flexDirection = 'row' }: Props) => (
   <S.Wrapper>
     <S.Grid>
       <S.HeaderContainer>
@@ -16,7 +17,7 @@ const PageBase = ({ children, title }: Props) => (
       <S.MenuContainer>
         <Menu />
       </S.MenuContainer>
-      <S.PageContent>{children}</S.PageContent>
+      <S.PageContent flexDirection={flexDirection}>{children}</S.PageContent>
     </S.Grid>
   </S.Wrapper>
 );
