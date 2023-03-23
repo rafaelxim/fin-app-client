@@ -61,9 +61,7 @@ const Dashboard = () => {
             icon={<AccountBalanceWalletIcon />}
             moneyVariation={toReal(D.moneyVariationFGTS)}
           />
-        </S.SummaryCardsContainer>
 
-        <S.SummaryCardsContainer>
           <SummaryCard
             title="Cripto"
             elapsedTime="do último mês"

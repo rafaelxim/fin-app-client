@@ -10,9 +10,13 @@ const GlobalStyles = createGlobalStyle`
   }
   ${({ theme }) => css`
     html {
-      font-size: 62.5%;
+      font-size: 35%;
       font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen,
         Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+      @media only screen and (min-width: 700px) {
+        font-size: 40%;
+      }
 
       @media only screen and (min-width: 1100px) {
         font-size: 45%;
