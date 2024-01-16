@@ -124,14 +124,26 @@ const Dashboard = () => {
         <S.PiesContainer>
           <PieGraph
             title="Distribuição"
-            subtitle="Como a grana ta distribuida?"
+            subtitle="Como o dinheiro está distribuído?"
             data={D.formatedPieData}
           />
           <PieGraph
             title="Alocação"
-            subtitle="O que tá e o que não tá investido!? "
+            subtitle="O que está investido? "
             data={D.formatedPieAlocationData}
           />
+        </S.PiesContainer>
+        <S.PiesContainer>
+          <PieGraph
+            title="Estratégia"
+            subtitle="Qual estratégia está sendo utilizada?"
+            data={D.formatedStrategyPieData}
+          />
+          {/* <PieGraph
+            title="Alocação"
+            subtitle="O que tá e o que não tá investido!? "
+            data={D.formatedPieAlocationData}
+          /> */}
         </S.PiesContainer>
       </S.Grid>
     </S.Wrapper>

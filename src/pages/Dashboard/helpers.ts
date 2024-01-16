@@ -1,15 +1,16 @@
 import moment from 'moment';
 import { EntryEntity } from '../../types/dbTypes';
 
-export /**
+/**
  * Filtra as entries por categoria ou investimentos
  * @param toSubtract se 1, pega entries do mês anterior
  */
-const filterByMonthSubstraction = (
+export const filterByMonthSubstraction = (
   monthBalances: EntryEntity[],
   toSubtract: number = 0,
   category?: string,
   investment?: string,
+  strategy?: string,
   excludeTransfers: boolean = false
 ) => {
   return monthBalances?.filter((entry) => {
@@ -44,6 +45,23 @@ const filterByMonthSubstraction = (
           entry?.attributes?.period ===
             moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
           entry?.attributes?.investment?.data?.attributes?.name === investment
+        );
+      }
+    } else if (strategy) {
+      if (excludeTransfers) {
+        return (
+          entry?.attributes?.period ===
+            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
+          entry?.attributes?.investment?.data?.attributes?.strategy?.data
+            ?.attributes?.name === strategy &&
+          entry.attributes?.transfer !== true
+        );
+      } else {
+        return (
+          entry?.attributes?.period ===
+            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
+          entry?.attributes?.investment?.data?.attributes?.strategy?.data
+            ?.attributes?.name === strategy
         );
       }
     } else {
@@ -112,6 +130,7 @@ export const getSummaryByCategory = (
       0,
       category,
       '',
+      '',
       true
     );
     let pastEntries = filterByMonthSubstraction(monthBalances, 1, category);
@@ -121,6 +140,7 @@ export const getSummaryByCategory = (
         monthBalances,
         1,
         category,
+        '',
         '',
         true
       );
@@ -159,6 +179,40 @@ export const getSummaryByCategory = (
   }
 };
 
+export const getSummaryByStrategy = (
+  monthBalances: EntryEntity[],
+  strategy: string
+) => {
+  if (monthBalances?.length) {
+    let currentEntries = filterByMonthSubstraction(
+      monthBalances,
+      0,
+      '',
+      '',
+      strategy
+    );
+    if (currentEntries?.length === 0) {
+      currentEntries = filterByMonthSubstraction(
+        monthBalances,
+        1,
+        '',
+        '',
+        strategy
+      );
+    }
+
+    const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
+
+    return {
+      currentPatrimonyValue,
+    };
+  } else {
+    return {
+      currentPatrimonyValue: 0,
+    };
+  }
+};
+
 export const getSummaryByInvestment = (
   monthBalances: EntryEntity[],
   investment: string
@@ -175,6 +229,7 @@ export const getSummaryByInvestment = (
       0,
       undefined,
       investment,
+      '',
       true
     );
     let pastEntries = filterByMonthSubstraction(
@@ -195,6 +250,7 @@ export const getSummaryByInvestment = (
         1,
         undefined,
         investment,
+        '',
         true
       );
       pastEntries = filterByMonthSubstraction(
@@ -337,9 +393,47 @@ export const getRenderData = (monthBalances: EntryEntity[]) => {
     currentPatrimonyValue: currentPatrimonyValueCripto,
     formattedVariation: formattedVariationCripto,
   } = getSummaryByCategory(monthBalances, 'Crypto');
-
   const { currentPatrimonyValue: currentPatrimonyValueCareiras } =
     getSummaryByCategory(monthBalances, 'Carteiras');
+  const { currentPatrimonyValue: currentPatrimonyValueInflacao } =
+    getSummaryByStrategy(monthBalances, 'Inflação');
+  const { currentPatrimonyValue: currentPatrimonyValuePreFixado } =
+    getSummaryByStrategy(monthBalances, 'Pré-Fixado');
+  const { currentPatrimonyValue: currentPatrimonyValuePosFixado } =
+    getSummaryByStrategy(monthBalances, 'Pós-Fixado');
+  const { currentPatrimonyValue: currentPatrimonyValueVariavel } =
+    getSummaryByStrategy(monthBalances, 'Renda Variável');
+  const { currentPatrimonyValue: currentPatrimonyValueConta } =
+    getSummaryByStrategy(monthBalances, 'Conta');
+
+  const formatedStrategyPieData = [
+    {
+      name: 'Inflação',
+      value: currentPatrimonyValueInflacao,
+      color: '#1e90c4',
+    },
+
+    {
+      name: 'Pré-Fixado',
+      value: currentPatrimonyValuePreFixado,
+      color: '#15f4d5',
+    },
+    {
+      name: 'Conta',
+      value: currentPatrimonyValueConta,
+      color: '#1e90c4',
+    },
+    {
+      name: 'Renda Variável',
+      value: currentPatrimonyValueVariavel,
+      color: '#15f4d5',
+    },
+    {
+      name: 'Pós-Fixado',
+      value: currentPatrimonyValuePosFixado,
+      color: '#1e90c4',
+    },
+  ];
 
   const formatedPieData = [
     {
@@ -421,5 +515,6 @@ export const getRenderData = (monthBalances: EntryEntity[]) => {
     currentPatrimonyValueCareiras,
     formatedPieData,
     formatedPieAlocationData,
+    formatedStrategyPieData,
   };
 };

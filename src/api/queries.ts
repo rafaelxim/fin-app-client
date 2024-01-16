@@ -42,6 +42,13 @@ export const QUERY_GET_ALL_ENTRIES = gql`
             data {
               attributes {
                 name
+                strategy {
+                  data {
+                    attributes {
+                      name
+                    }
+                  }
+                }
                 category {
                   data {
                     attributes {
