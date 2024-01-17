@@ -11,8 +11,8 @@ import * as H from './helpers';
 import { useMonthBalances } from '../../hooks';
 
 const Dashboard = () => {
-  const monthBalances = useMonthBalances();
-  const D = H.getRenderData(monthBalances);
+  const M = useMonthBalances();
+  const D = H.getRenderData(M);
 
   return (
     <S.Wrapper>
@@ -104,7 +104,7 @@ const Dashboard = () => {
         <S.GraphicCardContainer>
           <GraphicCard
             title="Evolução do Patrimônio"
-            data={H.getTotalPatrimonyByMonth(monthBalances)}
+            data={H.getTotalPatrimonyByMonth(M.monthBalances)}
             dataKeyX="period"
             dataKeyY="totalPatrimony"
           />
@@ -112,8 +112,7 @@ const Dashboard = () => {
           <GraphicCard
             title="Evolução Saldo FGTS"
             data={H.getTotalPatrimonyByMonthAndInvestment(
-              monthBalances,
-              'FGTS'
+              M.investmentFGTSBalances
             )}
             dataKeyX="period"
             dataKeyY="totalPatrimony"

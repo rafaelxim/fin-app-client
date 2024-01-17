@@ -65,6 +65,44 @@ export const QUERY_GET_ALL_ENTRIES = gql`
   }
 `;
 
+export const QUERY_GET_ENTRIES_BY_INVESTMENTS = gql`
+  query GET_ENTRIES_BY_INVESTMENT($investment: String!) {
+    entries(
+      pagination: { limit: 999999 }
+      filters: { investment: { name: { eq: $investment } } }
+    ) {
+      data {
+        attributes {
+          period
+          value
+          transfer
+          investment {
+            data {
+              attributes {
+                name
+                strategy {
+                  data {
+                    attributes {
+                      name
+                    }
+                  }
+                }
+                category {
+                  data {
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const QUERY_GET_ALL_INVESTMENTS = gql`
   query GET_ALL_INVESTMENTS {
     investments(pagination: { limit: 999999 }) {
