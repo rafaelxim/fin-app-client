@@ -19,6 +19,15 @@ export const useMonthBalances = () => {
     investmentContaSantanderBalances,
     setInvestmentContaSantanderBalances,
   ] = useState<EntryEntity[]>([]);
+  const [categoryRendaFixaEntries, setCategoryRendaFixaEntries] = useState<
+    EntryEntity[]
+  >([]);
+
+  const [categoryTesouro, setCategoryTesouro] = useState<EntryEntity[]>([]);
+
+  const [categoryCrypto, setCategoryCrypto] = useState<EntryEntity[]>([]);
+
+  const [categoryCarteiras, setCategoryCarteiras] = useState<EntryEntity[]>([]);
 
   const [lazy] = useLazyQuery<Query>(Q.QUERY_GET_ALL_ENTRIES);
   const [lazyFGTS] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_INVESTMENTS, {
@@ -36,6 +45,23 @@ export const useMonthBalances = () => {
       variables: { investment: 'CONTA SANTANDER' },
     }
   );
+
+  const [lazyRendaFixa] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_CATEGORY, {
+    variables: { category: 'Renda Fixa' },
+  });
+
+  const [lazyTesouro] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_CATEGORY, {
+    variables: { category: 'Tesouro Direto' },
+  });
+
+  const [lazyCrypto] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_CATEGORY, {
+    variables: { category: 'Crypto' },
+  });
+
+  const [lazyCarteiras] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_CATEGORY, {
+    variables: { category: 'Carteiras' },
+  });
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -62,6 +88,18 @@ export const useMonthBalances = () => {
         resContaSantander.data?.entries?.data!
       );
 
+      const resRendaFixaCategory = await lazyRendaFixa();
+      setCategoryRendaFixaEntries(resRendaFixaCategory.data?.entries?.data!);
+
+      const resTesouroCategory = await lazyTesouro();
+      setCategoryTesouro(resTesouroCategory.data?.entries?.data!);
+
+      const resCrypto = await lazyCrypto();
+      setCategoryCrypto(resCrypto.data?.entries?.data!);
+
+      const resCarteiras = await lazyCarteiras();
+      setCategoryCarteiras(resCarteiras.data?.entries?.data!);
+
       dispatch(L.deactivateLoader());
     })();
   };
@@ -72,5 +110,9 @@ export const useMonthBalances = () => {
     investmentContaNuBalances,
     investmentContaItauBalances,
     investmentContaSantanderBalances,
+    categoryRendaFixaEntries,
+    categoryTesouro,
+    categoryCrypto,
+    categoryCarteiras,
   };
 };

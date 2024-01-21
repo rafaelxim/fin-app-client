@@ -8,7 +8,7 @@ import { EntryEntity } from '../../types/dbTypes';
 export const filterByMonthSubstraction = (
   monthBalances: EntryEntity[],
   toSubtract: number = 0,
-  category?: string,
+  category?: boolean,
   investment?: boolean,
   strategy?: string,
   excludeTransfers: boolean = false
@@ -19,16 +19,12 @@ export const filterByMonthSubstraction = (
         return (
           entry?.attributes?.period ===
             moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry?.attributes?.investment?.data?.attributes?.category?.data
-            ?.attributes?.name === category &&
           entry.attributes?.transfer !== true
         );
       } else {
         return (
           entry?.attributes?.period ===
-            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry?.attributes?.investment?.data?.attributes?.category?.data
-            ?.attributes?.name === category
+          moment().subtract(toSubtract, 'months').format('YYYY-MM-01')
         );
       }
     } else if (investment) {
@@ -116,32 +112,29 @@ export const getTotalPatrimony = (monthBalances: EntryEntity[]) => {
   }
 };
 
-export const getSummaryByCategory = (
-  monthBalances: EntryEntity[],
-  category: string
-) => {
+export const getSummaryByCategory = (monthBalances: EntryEntity[]) => {
   if (monthBalances?.length) {
-    let currentEntries = filterByMonthSubstraction(monthBalances, 0, category);
+    let currentEntries = filterByMonthSubstraction(monthBalances, 0, true);
     let currentEntriesNoTransfers = filterByMonthSubstraction(
       monthBalances,
       0,
-      category,
+      true,
       false,
       '',
       true
     );
-    let pastEntries = filterByMonthSubstraction(monthBalances, 1, category);
+    let pastEntries = filterByMonthSubstraction(monthBalances, 1, true);
     if (currentEntries?.length === 0) {
-      currentEntries = filterByMonthSubstraction(monthBalances, 1, category);
+      currentEntries = filterByMonthSubstraction(monthBalances, 1, true);
       currentEntriesNoTransfers = filterByMonthSubstraction(
         monthBalances,
         1,
-        category,
+        true,
         false,
         '',
         true
       );
-      pastEntries = filterByMonthSubstraction(monthBalances, 2, category);
+      pastEntries = filterByMonthSubstraction(monthBalances, 2, true);
     }
 
     const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
@@ -184,7 +177,7 @@ export const getSummaryByStrategy = (
     let currentEntries = filterByMonthSubstraction(
       monthBalances,
       0,
-      '',
+      false,
       false,
       strategy
     );
@@ -192,7 +185,7 @@ export const getSummaryByStrategy = (
       currentEntries = filterByMonthSubstraction(
         monthBalances,
         1,
-        '',
+        false,
         false,
         strategy
       );
@@ -313,7 +306,7 @@ export const getTotalPatrimonyByMonthAndInvestment = (
     const currentMonthEntries = filterByMonthSubstraction(
       monthBalances!,
       i,
-      '',
+      false,
       true
     );
     if (currentMonthEntries?.length) {
@@ -336,6 +329,10 @@ type BalanceData = {
   investmentContaNuBalances: EntryEntity[];
   investmentContaItauBalances: EntryEntity[];
   investmentContaSantanderBalances: EntryEntity[];
+  categoryRendaFixaEntries: EntryEntity[];
+  categoryTesouro: EntryEntity[];
+  categoryCrypto: EntryEntity[];
+  categoryCarteiras: EntryEntity[];
 };
 
 export const getRenderData = (balance: BalanceData) => {
@@ -351,14 +348,14 @@ export const getRenderData = (balance: BalanceData) => {
     moneyVariation: moneyVariationRendaFixa,
     currentPatrimonyValue: currentPatrimonyValueRendaFixa,
     formattedVariation: formattedVariationRendaFixa,
-  } = getSummaryByCategory(balance.monthBalances, 'Renda Fixa');
+  } = getSummaryByCategory(balance.categoryRendaFixaEntries);
 
   const {
     variation: variationTD,
     moneyVariation: moneyVariationTD,
     currentPatrimonyValue: currentPatrimonyValueTD,
     formattedVariation: formattedVariationTD,
-  } = getSummaryByCategory(balance.monthBalances, 'Tesouro Direto');
+  } = getSummaryByCategory(balance.categoryTesouro);
 
   const {
     variation: variationFGTS,
@@ -393,9 +390,9 @@ export const getRenderData = (balance: BalanceData) => {
     moneyVariation: moneyVariationCripto,
     currentPatrimonyValue: currentPatrimonyValueCripto,
     formattedVariation: formattedVariationCripto,
-  } = getSummaryByCategory(balance.monthBalances, 'Crypto');
+  } = getSummaryByCategory(balance.categoryCrypto);
   const { currentPatrimonyValue: currentPatrimonyValueCareiras } =
-    getSummaryByCategory(balance.monthBalances, 'Carteiras');
+    getSummaryByCategory(balance.categoryCarteiras);
   const { currentPatrimonyValue: currentPatrimonyValueInflacao } =
     getSummaryByStrategy(balance.monthBalances, 'Inflação');
   const { currentPatrimonyValue: currentPatrimonyValuePreFixado } =
