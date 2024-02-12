@@ -1,71 +1,6 @@
 import moment from 'moment';
 import { EntryEntity } from '../../types/dbTypes';
 
-/**
- * Filtra as entries por categoria ou investimentos
- * @param toSubtract se 1, pega entries do mês anterior
- */
-export const filterByMonthSubstraction = (
-  monthBalances: EntryEntity[],
-  toSubtract: number = 0,
-  category?: boolean,
-  investment?: boolean,
-  strategy?: string,
-  excludeTransfers: boolean = false
-) => {
-  return monthBalances?.filter((entry) => {
-    if (category) {
-      if (excludeTransfers) {
-        return (
-          entry?.attributes?.period ===
-            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry.attributes?.transfer !== true
-        );
-      } else {
-        return (
-          entry?.attributes?.period ===
-          moment().subtract(toSubtract, 'months').format('YYYY-MM-01')
-        );
-      }
-    } else if (investment) {
-      if (excludeTransfers) {
-        return (
-          entry?.attributes?.period ===
-            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry.attributes?.transfer !== true
-        );
-      } else {
-        return (
-          entry?.attributes?.period ===
-          moment().subtract(toSubtract, 'months').format('YYYY-MM-01')
-        );
-      }
-    } else if (strategy) {
-      if (excludeTransfers) {
-        return (
-          entry?.attributes?.period ===
-            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry?.attributes?.investment?.data?.attributes?.strategy?.data
-            ?.attributes?.name === strategy &&
-          entry.attributes?.transfer !== true
-        );
-      } else {
-        return (
-          entry?.attributes?.period ===
-            moment().subtract(toSubtract, 'months').format('YYYY-MM-01') &&
-          entry?.attributes?.investment?.data?.attributes?.strategy?.data
-            ?.attributes?.name === strategy
-        );
-      }
-    } else {
-      return (
-        entry.attributes?.period ===
-        moment().subtract(toSubtract, 'months').format('YYYY-MM-01')
-      );
-    }
-  });
-};
-
 export const getMonthTotalValue = (currentEntries: EntryEntity[]) => {
   const res = currentEntries.reduce((prev, curr) => {
     if (curr.attributes) {
@@ -77,21 +12,17 @@ export const getMonthTotalValue = (currentEntries: EntryEntity[]) => {
   return res;
 };
 
-export const getTotalPatrimony = (monthBalances: EntryEntity[]) => {
+export const getTotalPatrimony = (
+  monthBalances: EntryEntity[],
+  referenceDate: string
+) => {
   if (monthBalances?.length) {
-    let currentEntries = filterByMonthSubstraction(monthBalances, 0);
-    let pastEntries = filterByMonthSubstraction(monthBalances, 1);
-    if (currentEntries?.length === 0) {
-      currentEntries = filterByMonthSubstraction(monthBalances, 1);
-      pastEntries = filterByMonthSubstraction(monthBalances, 2);
-    }
+    let currentEntries = getCurrentEntries(monthBalances, referenceDate);
+    let pastEntries = getPastMonthEntries(monthBalances, referenceDate);
 
     const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
-
     const pastPatrimonyValue = getMonthTotalValue(pastEntries!);
-
     const variation = (currentPatrimonyValue / pastPatrimonyValue - 1) * 100;
-
     const moneyVariation = currentPatrimonyValue - pastPatrimonyValue;
 
     const formattedVariation = variation.toFixed(2);
@@ -112,45 +43,27 @@ export const getTotalPatrimony = (monthBalances: EntryEntity[]) => {
   }
 };
 
-export const getSummaryByCategory = (monthBalances: EntryEntity[]) => {
+export const subtractMonthsFromDate = (
+  referenceDate: string,
+  months: number
+) => {
+  return moment(referenceDate).subtract(months, 'months').format('YYYY-MM-DD');
+};
+
+export const getSummaryByCategory = (
+  monthBalances: EntryEntity[],
+  referenceDate: string
+) => {
   if (monthBalances?.length) {
-    let currentEntries = filterByMonthSubstraction(monthBalances, 0, true);
-    let currentEntriesNoTransfers = filterByMonthSubstraction(
-      monthBalances,
-      0,
-      true,
-      false,
-      '',
-      true
-    );
-    let pastEntries = filterByMonthSubstraction(monthBalances, 1, true);
-    if (currentEntries?.length === 0) {
-      currentEntries = filterByMonthSubstraction(monthBalances, 1, true);
-      currentEntriesNoTransfers = filterByMonthSubstraction(
-        monthBalances,
-        1,
-        true,
-        false,
-        '',
-        true
-      );
-      pastEntries = filterByMonthSubstraction(monthBalances, 2, true);
-    }
+    const currentEntries = getCurrentEntries(monthBalances, referenceDate);
+
+    const pastEntries = getPastMonthEntries(monthBalances, referenceDate);
 
     const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
-
-    const currentPatrimonyValueNoTransfers = getMonthTotalValue(
-      currentEntriesNoTransfers!
-    );
-
     const pastPatrimonyValue = getMonthTotalValue(pastEntries!);
-
     const variation =
-      (currentPatrimonyValueNoTransfers / pastPatrimonyValue - 1) * 100;
-
-    const moneyVariation =
-      currentPatrimonyValueNoTransfers - pastPatrimonyValue;
-
+      (currentPatrimonyValue / pastPatrimonyValue - 1) * 100 || 0;
+    const moneyVariation = currentPatrimonyValue - pastPatrimonyValue;
     const formattedVariation = variation.toFixed(2);
 
     return {
@@ -171,25 +84,16 @@ export const getSummaryByCategory = (monthBalances: EntryEntity[]) => {
 
 export const getSummaryByStrategy = (
   monthBalances: EntryEntity[],
-  strategy: string
+  strategy: string,
+  referenceDate: string
 ) => {
   if (monthBalances?.length) {
-    let currentEntries = filterByMonthSubstraction(
-      monthBalances,
-      0,
-      false,
-      false,
-      strategy
+    let currentEntries = monthBalances.filter(
+      (e) =>
+        e.attributes?.period === subtractMonthsFromDate(referenceDate, 1) &&
+        e.attributes.investment?.data?.attributes?.strategy?.data?.attributes
+          ?.name === strategy
     );
-    if (currentEntries?.length === 0) {
-      currentEntries = filterByMonthSubstraction(
-        monthBalances,
-        1,
-        false,
-        false,
-        strategy
-      );
-    }
 
     const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
 
@@ -203,64 +107,36 @@ export const getSummaryByStrategy = (
   }
 };
 
-export const getSummaryByInvestment = (monthBalances: EntryEntity[]) => {
+const getCurrentEntries = (
+  monthBalances: EntryEntity[],
+  referenceDate: string
+) => {
+  return monthBalances.filter(
+    (e) => e.attributes?.period === subtractMonthsFromDate(referenceDate, 1)
+  );
+};
+
+const getPastMonthEntries = (
+  monthBalances: EntryEntity[],
+  referenceDate: string
+) => {
+  return monthBalances.filter(
+    (e) => e.attributes?.period === subtractMonthsFromDate(referenceDate, 2)
+  );
+};
+
+export const getSummaryByInvestment = (
+  monthBalances: EntryEntity[],
+  referenceDate: string
+) => {
   if (monthBalances?.length) {
-    let currentEntries = filterByMonthSubstraction(
-      monthBalances,
-      0,
-      undefined,
-      true
-    );
-    let currentEntriesNoTransfers = filterByMonthSubstraction(
-      monthBalances,
-      0,
-      undefined,
-      true,
-      '',
-      true
-    );
-    let pastEntries = filterByMonthSubstraction(
-      monthBalances,
-      1,
-      undefined,
-      true
-    );
-    if (currentEntries?.length === 0) {
-      currentEntries = filterByMonthSubstraction(
-        monthBalances,
-        1,
-        undefined,
-        true
-      );
-      currentEntriesNoTransfers = filterByMonthSubstraction(
-        monthBalances,
-        1,
-        undefined,
-        true,
-        '',
-        true
-      );
-      pastEntries = filterByMonthSubstraction(
-        monthBalances,
-        2,
-        undefined,
-        true
-      );
-    }
+    let currentEntries = getCurrentEntries(monthBalances, referenceDate);
+    let pastEntries = getPastMonthEntries(monthBalances, referenceDate);
 
     const currentPatrimonyValue = getMonthTotalValue(currentEntries!);
-
-    const currentPatrimonyValueNoTransfers = getMonthTotalValue(
-      currentEntriesNoTransfers!
-    );
-
     const pastPatrimonyValue = getMonthTotalValue(pastEntries!);
-
-    const variation =
-      (currentPatrimonyValueNoTransfers / pastPatrimonyValue - 1) * 100;
-
-    const moneyVariation =
-      currentPatrimonyValueNoTransfers - pastPatrimonyValue;
+    const variation = (currentPatrimonyValue / pastPatrimonyValue - 1) * 100;
+    const moneyVariation = currentPatrimonyValue - pastPatrimonyValue;
 
     const formattedVariation = variation.toFixed(2);
 
@@ -280,10 +156,15 @@ export const getSummaryByInvestment = (monthBalances: EntryEntity[]) => {
   }
 };
 
-export const getTotalPatrimonyByMonth = (monthBalances: EntryEntity[]) => {
+export const getTotalPatrimonyByMonth = (
+  monthBalances: EntryEntity[],
+  referenceDate: string
+) => {
   const patrimonyByMonth = [];
   for (let i = 0; i < 36; i++) {
-    const currentMonthEntries = filterByMonthSubstraction(monthBalances!, i);
+    const currentMonthEntries = monthBalances.filter(
+      (e) => e.attributes?.period === subtractMonthsFromDate(referenceDate, i)
+    );
     if (currentMonthEntries?.length) {
       const monthObj = {
         period: moment(currentMonthEntries[0].attributes?.period)
@@ -299,15 +180,13 @@ export const getTotalPatrimonyByMonth = (monthBalances: EntryEntity[]) => {
 };
 
 export const getTotalPatrimonyByMonthAndInvestment = (
-  monthBalances: EntryEntity[]
+  monthBalances: EntryEntity[],
+  referenceDate: string
 ) => {
   const patrimonyByMonth = [];
   for (let i = 0; i < 36; i++) {
-    const currentMonthEntries = filterByMonthSubstraction(
-      monthBalances!,
-      i,
-      false,
-      true
+    const currentMonthEntries = monthBalances.filter(
+      (e) => e.attributes?.period === subtractMonthsFromDate(referenceDate, i)
     );
     if (currentMonthEntries?.length) {
       const monthObj = {
@@ -335,74 +214,85 @@ type BalanceData = {
   categoryCarteiras: EntryEntity[];
 };
 
-export const getRenderData = (balance: BalanceData) => {
+export const getRenderData = (balance: BalanceData, referenceDate: string) => {
   const {
     moneyVariation,
     variation,
     currentPatrimonyValue,
     formattedVariation,
-  } = getTotalPatrimony(balance.monthBalances);
+  } = getTotalPatrimony(balance.monthBalances, referenceDate);
 
   const {
     variation: variationRendaFixa,
     moneyVariation: moneyVariationRendaFixa,
     currentPatrimonyValue: currentPatrimonyValueRendaFixa,
     formattedVariation: formattedVariationRendaFixa,
-  } = getSummaryByCategory(balance.categoryRendaFixaEntries);
+  } = getSummaryByCategory(balance.categoryRendaFixaEntries, referenceDate);
 
   const {
     variation: variationTD,
     moneyVariation: moneyVariationTD,
     currentPatrimonyValue: currentPatrimonyValueTD,
     formattedVariation: formattedVariationTD,
-  } = getSummaryByCategory(balance.categoryTesouro);
+  } = getSummaryByCategory(balance.categoryTesouro, referenceDate);
 
   const {
     variation: variationFGTS,
     moneyVariation: moneyVariationFGTS,
     currentPatrimonyValue: currentPatrimonyValueFGTS,
     formattedVariation: formattedVariationFGTS,
-  } = getSummaryByInvestment(balance.investmentFGTSBalances);
+  } = getSummaryByInvestment(balance.investmentFGTSBalances, referenceDate);
 
   const {
     variation: variationNubank,
     moneyVariation: moneyVariationNubank,
     currentPatrimonyValue: currentPatrimonyValueNubank,
     formattedVariation: formattedVariationNubank,
-  } = getSummaryByInvestment(balance.investmentContaNuBalances);
+  } = getSummaryByInvestment(balance.investmentContaNuBalances, referenceDate);
 
   const {
     variation: variationItau,
     moneyVariation: moneyVariationItau,
     currentPatrimonyValue: currentPatrimonyValueItau,
     formattedVariation: formattedVariationItau,
-  } = getSummaryByInvestment(balance.investmentContaItauBalances);
+  } = getSummaryByInvestment(
+    balance.investmentContaItauBalances,
+    referenceDate
+  );
 
   const {
     variation: variationSantander,
     moneyVariation: moneyVariationSantander,
     currentPatrimonyValue: currentPatrimonyValueSantander,
     formattedVariation: formattedVariationSantander,
-  } = getSummaryByInvestment(balance.investmentContaSantanderBalances);
+  } = getSummaryByInvestment(
+    balance.investmentContaSantanderBalances,
+    referenceDate
+  );
 
   const {
     variation: variationCripto,
     moneyVariation: moneyVariationCripto,
     currentPatrimonyValue: currentPatrimonyValueCripto,
     formattedVariation: formattedVariationCripto,
-  } = getSummaryByCategory(balance.categoryCrypto);
+  } = getSummaryByCategory(balance.categoryCrypto, referenceDate);
+
   const { currentPatrimonyValue: currentPatrimonyValueCareiras } =
-    getSummaryByCategory(balance.categoryCarteiras);
+    getSummaryByCategory(balance.categoryCarteiras, referenceDate);
   const { currentPatrimonyValue: currentPatrimonyValueInflacao } =
-    getSummaryByStrategy(balance.monthBalances, 'Inflação');
+    getSummaryByStrategy(balance.monthBalances, 'Inflação', referenceDate);
   const { currentPatrimonyValue: currentPatrimonyValuePreFixado } =
-    getSummaryByStrategy(balance.monthBalances, 'Pré-Fixado');
+    getSummaryByStrategy(balance.monthBalances, 'Pré-Fixado', referenceDate);
   const { currentPatrimonyValue: currentPatrimonyValuePosFixado } =
-    getSummaryByStrategy(balance.monthBalances, 'Pós-Fixado');
+    getSummaryByStrategy(balance.monthBalances, 'Pós-Fixado', referenceDate);
   const { currentPatrimonyValue: currentPatrimonyValueVariavel } =
-    getSummaryByStrategy(balance.monthBalances, 'Renda Variável');
+    getSummaryByStrategy(
+      balance.monthBalances,
+      'Renda Variável',
+      referenceDate
+    );
   const { currentPatrimonyValue: currentPatrimonyValueConta } =
-    getSummaryByStrategy(balance.monthBalances, 'Conta');
+    getSummaryByStrategy(balance.monthBalances, 'Conta', referenceDate);
 
   const formatedStrategyPieData = [
     {

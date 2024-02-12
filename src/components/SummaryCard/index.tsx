@@ -35,7 +35,7 @@ const SummaryCard = ({
           data-testid="variation-value"
           negativeVariation={negativeVariation}
         >
-          {variation}
+          {variation || 0}
         </S.VariationValue>
         <S.VariationTime>{elapsedTime}</S.VariationTime>
         <S.MoneyVariation negativeVariation={negativeVariation}>

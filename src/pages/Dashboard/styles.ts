@@ -84,6 +84,10 @@ export const GraphicCardContainer = styled.div`
 `;
 
 export const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3rem 0 0 0;
   grid-row: 1 / 2;
   grid-column: 3 / -1;
   align-self: end;
@@ -99,7 +103,6 @@ export const PageTitle = styled.div`
     color: ${theme.colors.text.primary};
     font-weight: bold;
     font-size: 2rem;
-    margin-top: 4rem;
   `}
 `;
 

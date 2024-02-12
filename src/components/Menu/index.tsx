@@ -18,10 +18,7 @@ const Menu = () => {
           click={() => navigate('/registro-de-investimentos')}
           menu="Registrar Investimentos"
         />
-        <MenuItem
-          click={() => navigate('/registro-de-transferencia')}
-          menu="Registrar Transferência"
-        />
+
         {/* <MenuItem
           click={() => navigate('/insercao-dividendos')}
           menu="Inserção de Dividendos"

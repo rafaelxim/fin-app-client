@@ -8,7 +8,7 @@ type WrapperProps = {
 
 export const Wrapper = styled.div<WrapperProps>`
   ${({ theme, topMargin, fullWidth, flex }) => css`
-    background-color: ${theme.colors.background.paper};
+    background: linear-gradient(#1f2226 13%, #1d5872);
     /* border-radius: 2rem; */
     color: ${theme.colors.text.primary};
     margin-top: ${topMargin ? '2rem' : '0'};

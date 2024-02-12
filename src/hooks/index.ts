@@ -5,7 +5,7 @@ import { useAppDispatch } from '../app/hooks';
 import * as L from '../features/FullScreenLoader/loaderSlice';
 import { EntryEntity, Query } from '../types/dbTypes';
 
-export const useMonthBalances = () => {
+export const useMonthBalances = (referenceDate: string | undefined) => {
   const [monthBalances, setMonthBalances] = useState<EntryEntity[]>([]);
   const [investmentFGTSBalances, setInvestmentFGTSBalances] = useState<
     EntryEntity[]
@@ -29,37 +29,41 @@ export const useMonthBalances = () => {
 
   const [categoryCarteiras, setCategoryCarteiras] = useState<EntryEntity[]>([]);
 
-  const [lazy] = useLazyQuery<Query>(Q.QUERY_GET_ALL_ENTRIES);
+  // ---------------------- // -------------------- // -----------------------------------
+
+  const [lazy] = useLazyQuery<Query>(Q.QUERY_GET_ALL_ENTRIES, {
+    variables: { referenceDate },
+  });
   const [lazyFGTS] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_INVESTMENTS, {
-    variables: { investment: 'FGTS' },
+    variables: { investment: 'FGTS', referenceDate },
   });
   const [lazyNu] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_INVESTMENTS, {
-    variables: { investment: 'CONTA NUBANK' },
+    variables: { investment: 'CONTA NUBANK', referenceDate },
   });
   const [lazyItau] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_INVESTMENTS, {
-    variables: { investment: 'CONTA ITAU' },
+    variables: { investment: 'CONTA ITAU', referenceDate },
   });
   const [lazySantander] = useLazyQuery<Query>(
     Q.QUERY_GET_ENTRIES_BY_INVESTMENTS,
     {
-      variables: { investment: 'CONTA SANTANDER' },
+      variables: { investment: 'CONTA SANTANDER', referenceDate },
     }
   );
 
   const [lazyRendaFixa] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_CATEGORY, {
-    variables: { category: 'Renda Fixa' },
+    variables: { category: 'Renda Fixa', referenceDate },
   });
 
   const [lazyTesouro] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_CATEGORY, {
-    variables: { category: 'Tesouro Direto' },
+    variables: { category: 'Tesouro Direto', referenceDate },
   });
 
   const [lazyCrypto] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_CATEGORY, {
-    variables: { category: 'Crypto' },
+    variables: { category: 'Crypto', referenceDate },
   });
 
   const [lazyCarteiras] = useLazyQuery<Query>(Q.QUERY_GET_ENTRIES_BY_CATEGORY, {
-    variables: { category: 'Carteiras' },
+    variables: { category: 'Carteiras', referenceDate },
   });
 
   const dispatch = useAppDispatch();
@@ -67,7 +71,7 @@ export const useMonthBalances = () => {
   useEffect(() => {
     dispatch(L.activateLoader());
     executeQuery();
-  }, []);
+  }, [referenceDate]);
 
   const executeQuery = () => {
     void (async () => {

@@ -31,8 +31,11 @@ export const QUERY_GET_ENTRIES_BY_MONTH = gql`
 `;
 
 export const QUERY_GET_ALL_ENTRIES = gql`
-  query GET_ALL_ENTRIES {
-    entries(pagination: { limit: 999999 }) {
+  query GET_ALL_ENTRIES($referenceDate: Date!) {
+    entries(
+      pagination: { limit: 999999 }
+      filters: { period: { lt: $referenceDate } }
+    ) {
       data {
         attributes {
           period
@@ -66,10 +69,13 @@ export const QUERY_GET_ALL_ENTRIES = gql`
 `;
 
 export const QUERY_GET_ENTRIES_BY_INVESTMENTS = gql`
-  query GET_ENTRIES_BY_INVESTMENT($investment: String!) {
+  query GET_ENTRIES_BY_INVESTMENT($investment: String!, $referenceDate: Date!) {
     entries(
       pagination: { limit: 999999 }
-      filters: { investment: { name: { eq: $investment } } }
+      filters: {
+        investment: { name: { eq: $investment } }
+        period: { lt: $referenceDate }
+      }
     ) {
       data {
         attributes {
@@ -104,10 +110,13 @@ export const QUERY_GET_ENTRIES_BY_INVESTMENTS = gql`
 `;
 
 export const QUERY_GET_ENTRIES_BY_CATEGORY = gql`
-  query GET_ENTRIES_BY_CATEGORY($category: String!) {
+  query GET_ENTRIES_BY_CATEGORY($category: String!, $referenceDate: Date!) {
     entries(
       pagination: { limit: 999999 }
-      filters: { investment: { category: { name: { eq: $category } } } }
+      filters: {
+        investment: { category: { name: { eq: $category } } }
+        period: { lt: $referenceDate }
+      }
     ) {
       data {
         attributes {
